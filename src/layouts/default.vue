@@ -1,9 +1,7 @@
 <template>
-  <main class="px-4 py-10 text-center text-gray-700 dark:text-gray-200">
-    <router-view />
+  <main class="p-6 px-8 text-gray-700 dark:text-gray-200">
+    <Header />
+    <router-view class="px-2" />
     <Footer />
-    <div class="mt-5 mx-auto text-center opacity-25 text-sm">
-      [Default Layout]
-    </div>
   </main>
 </template>
