@@ -70,7 +70,7 @@ html.dark {
 .prose a {
   font-weight: inherit;
   text-decoration: none;
-  transition: border 0.3s ease-in-out, color 0.3s ease-in-out;
+  transition: color 0.3s ease-in-out;
 }
 
 .prose a code {

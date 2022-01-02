@@ -9,6 +9,7 @@ declare module 'vue' {
     CarbonMoon: typeof import('~icons/carbon/moon')['default']
     CarbonMountain: typeof import('~icons/carbon/mountain')['default']
     CarbonSun: typeof import('~icons/carbon/sun')['default']
+    Divider: typeof import('./components/Divider.vue')['default']
     Footer: typeof import('./components/Footer.vue')['default']
     Header: typeof import('./components/Header.vue')['default']
     ListBlogs: typeof import('./components/ListBlogs.vue')['default']
