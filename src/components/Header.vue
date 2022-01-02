@@ -5,7 +5,7 @@ const { t } = useI18n()
 </script>
 
 <template>
-  <nav class="text-xl mt-2 mb-12 mx-2 flex items-center justify-end">
+  <nav class="text-xl mt-2 mb-16 mx-2 flex items-center justify-end">
     <router-link class="icon-btn flex items-center mr-auto" to="/" :title="t('button.home')">
       <carbon-mountain />
     </router-link>

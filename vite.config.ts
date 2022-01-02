@@ -97,6 +97,7 @@ export default defineConfig({
     // Don't need this? Try vitesse-lite: https://github.com/antfu/vitesse-lite
     Markdown({
       wrapperClasses: markdownWrapperClasses,
+      wrapperComponent: 'blog',
       headEnabled: true,
       markdownItSetup(md) {
         // https://prismjs.com/
