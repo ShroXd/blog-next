@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { formatDate } from '~/utilies'
+import { formatDate, isBlogPage } from '~/utilies'
 
 defineProps({
   frontmatter: {
@@ -13,7 +13,7 @@ const route = useRoute()
 
 <template>
   <div class="prose m-auto">
-    <div v-if="!route.path.endsWith('/blogs')" class="mb-12">
+    <div v-if="isBlogPage(route)" class="mb-12">
       <div class="text-5xl font-black mb-2">
         {{ frontmatter.title }}
       </div>
@@ -24,7 +24,7 @@ const route = useRoute()
 
     <slot />
 
-    <div v-if="!route.path.endsWith('/blogs')" class="text-base mt-16 icon-btn">
+    <div v-if="isBlogPage(route)" class="text-base mt-16 icon-btn">
       <router-link :to="route.path.split('/').slice(0, -1).join('/') || '/'">
         cd ..
       </router-link>
