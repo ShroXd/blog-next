@@ -1,6 +1,7 @@
 button:
   about: About
   back: Back
+  blogs: Blogs
   go: GO
   home: Home
   toggle_dark: Toggle dark mode

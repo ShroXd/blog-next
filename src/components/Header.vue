@@ -10,12 +10,9 @@ const { t } = useI18n()
       <carbon-mountain />
     </router-link>
 
-    <router-link class="icon-btn mx-2 mr-10" to="/blogs" :title="t('button.home')">
-      <span class="lg:(hidden) flex items-center">
+    <router-link class="icon-btn mx-2 mr-10" to="/blogs" :title="t('button.blogs')">
+      <span class="flex items-center">
         <carbon-blog />
-      </span>
-      <span class="<lg:(hidden)">
-        {{ t('menu.blog') }}
       </span>
     </router-link>
 
