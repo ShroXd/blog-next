@@ -13,6 +13,7 @@ import { VitePWA } from 'vite-plugin-pwa'
 import VueI18n from '@intlify/vite-plugin-vue-i18n'
 import Inspect from 'vite-plugin-inspect'
 import Prism from 'markdown-it-prism'
+import markdownItLatex from '@iktakahiro/markdown-it-katex'
 import LinkAttributes from 'markdown-it-link-attributes'
 import fs from 'fs-extra'
 import matter from 'gray-matter'
@@ -103,6 +104,9 @@ export default defineConfig({
         // https://prismjs.com/
         // @ts-expect-error types mismatch
         md.use(Prism)
+        // Support LaTeX
+        // TODO: implement a plugin includes LaTeX parser and CSS
+        md.use(markdownItLatex)
         // @ts-expect-error types mismatch
         md.use(LinkAttributes, {
           pattern: /^https?:\/\//,

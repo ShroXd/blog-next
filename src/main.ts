@@ -14,6 +14,8 @@ import 'virtual:windi-utilities.css'
 // windicss devtools support (dev only)
 import 'virtual:windi-devtools'
 
+import 'markdown-it-latex/dist/index.css'
+
 declare module 'vue-router' {
   interface RouteMeta {
     frontmatter: any

@@ -9,9 +9,11 @@
     "typecheck": "vue-tsc --noEmit"
   },
   "dependencies": {
+    "@iktakahiro/markdown-it-katex": "^4.0.1",
     "@vueuse/core": "^7.3.0",
     "@vueuse/head": "^0.7.4",
     "dayjs": "^1.10.7",
+    "markdown-it-latex": "^0.2.0",
     "nprogress": "^0.2.0",
     "pinia": "^2.0.6",
     "prism-theme-vars": "^0.2.2",
