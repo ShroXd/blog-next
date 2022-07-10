@@ -6,6 +6,7 @@ tags: ['algorithm', 'sort']
 draft: true
 summary: 'Sorting plays a major role in commercial data processing and in modern scientific computing'
 authors: ['default']
+
 ---
 
 As we all known, __sorting__ is the process of rearranging a sequence of objects so as to put them is some logical order. Sorting doesn't only play an important role in the computer science, but also widely used in life. 
@@ -123,6 +124,7 @@ During the first step, the program _record_ the function calls in the _TODO list
 You might be curious, why we talk about the _linear recursion_? That is because it helps us understand a widely used recursion form: tree recursion. And it's also necessary to understand the _top-down merge sort_.
 
 To illustrate the __tree recursion__, let's consider the Fibonacci numbers. We can use the following formula to compute them.
+
 $$
 Fib(n) =
 \begin{cases}
@@ -131,6 +133,7 @@ Fib(n) =
 Fib(n-1) + Fib(n-2), & \text{otherwise}
 \end{cases}
 $$
+
 According the formula, we can easily write out the code.
 
 ```kotlin
@@ -190,7 +193,11 @@ __Proposition__: Top-down merge sort uses at most $N\lg{N}$ compares to sort any
 
 To understand this proposition, we can consider the diagram above. Each node depicts a _merge_, and the height of the tree _h_ stand for the number of recursion.
 
-For the $k$ th level, there are $2^k$ sub-arrays. Set the $n$ is the total levels of tree, the original array has $2^n$ elements, so for the $k$ th level, each sub-array has $\frac{2^n}{2^k} = 2^{n-k}$ elements. Thus each sub-array requires __at most__  $2^{n-k}$ compares for the merge.
+For the $k$ th level, there are $2^k$ sub-arrays. Set the $n$ is the total levels of tree, the original array has $2^n$ elements, so for the $k$ th level, each sub-array has
+$$
+\frac{2^n}{2^k} = 2^{n-k}
+$$
+elements. Thus each sub-array requires __at most__  $2^{n-k}$ compares for the merge.
 
 Thus we have $2^k * 2^{n-k} = 2^n$ total cost for __each__ of the $n$ levels, we have $n$ levels, for a total of $n2^n$. Since $2^n = N$ and $n=\lg{N}$, so we have $n2^n=N\lg{N}$
 
@@ -234,7 +241,9 @@ To prove this, we can consider the following compare tree. An _internal node_ `i
 It's easy to know, for a array with $N$ items, there are $N!$ different permutations, which means the compare tree have $N!$ leaves at least. If there are fewer than $N!$ leaves, them some permutations is missing from the tree. The longest path from _root_ to _leaf_ is very important since it measures the worst-case number of compares used by the algorithm.
 
 If we fill all of these _internal nodes_ and _leaf nodes_, the compare tree will become a complete binary tree. For a complete binary tree of height $h$, it has at most that $2^h$ leaves. According to the analysis in this section, we have:
+
 $$
 N! \leq number\ of\ leaves \leq 2^h
 $$
+
 The path of height $h$ corresponds the worst-case path, in other words, $h$ is precisely the worst-case number of compares. To get the scope of $h$, we take the logarithm (base 2) of both side of this equation, we will know the number of compares used by any compare-based algorithm must be __at least__ $lg{N!}$. Apply the Stirling's approximation, we have $lg{N!} \sim N\lg{N}$.
