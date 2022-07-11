@@ -9,6 +9,8 @@ authors: ['default']
 
 ---
 
+[[toc]]
+
 As we all known, __sorting__ is the process of rearranging a sequence of objects so as to put them is some logical order. Sorting doesn't only play an important role in the computer science, but also widely used in life. 
 
 Today, almost all programming languages implement the _Sort_ method in their official library. The programmer can simply invoke it with a compare logic, so it seems there is no longer any need to learn sorting algorithm. But I want to say, when we build a huge system, the ability to process detail and the ability to design the structure are both important. In some scenario, we need to build the data structure and algorithm by ourselves, only then we can improve the program's performance and resolve large problems.

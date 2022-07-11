@@ -8,6 +8,8 @@ summary: 'Golang always is a good programming language, except error handling an
 authors: ['default']
 ---
 
+[[toc]]
+
 # Overview
 
 Basicaly, this is an article that records my learning process for Golang.
