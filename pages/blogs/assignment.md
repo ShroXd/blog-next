@@ -8,6 +8,8 @@ summary: 'Assignment profoundly changes the way we understand code'
 authors: ['default']
 ---
 
+[[toc]]
+
 > Substitution model and environment model are two different mental models for understanding code
 
 ## Functional programming

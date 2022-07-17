@@ -13,9 +13,16 @@ import { VitePWA } from 'vite-plugin-pwa'
 import VueI18n from '@intlify/vite-plugin-vue-i18n'
 import Inspect from 'vite-plugin-inspect'
 import Prism from 'markdown-it-prism'
+// @ts-expect-error missing types
+import markdownItLatex from '@iktakahiro/markdown-it-katex'
 import LinkAttributes from 'markdown-it-link-attributes'
+// @ts-expect-error missing types
+import TOC from 'markdown-it-table-of-contents'
+import anchor from 'markdown-it-anchor'
 import fs from 'fs-extra'
 import matter from 'gray-matter'
+
+import { slugify } from './scripts/slugify'
 
 const markdownWrapperClasses = 'prose prose-sm m-auto text-left'
 
@@ -103,6 +110,9 @@ export default defineConfig({
         // https://prismjs.com/
         // @ts-expect-error types mismatch
         md.use(Prism)
+        // Support LaTeX
+        // TODO: implement a plugin includes LaTeX parser and CSS
+        md.use(markdownItLatex)
         // @ts-expect-error types mismatch
         md.use(LinkAttributes, {
           pattern: /^https?:\/\//,
@@ -110,6 +120,18 @@ export default defineConfig({
             target: '_blank',
             rel: 'noopener',
           },
+        })
+        // @ts-expect-error missing types
+        md.use(anchor, {
+          slugify,
+          permalink: anchor.permalink.linkInsideHeader({
+            symbol: '#',
+            renderAttrs: () => ({ 'aria-hidden': 'true' }),
+          }),
+        })
+        md.use(TOC, {
+          includeLevel: [1, 2, 3],
+          slugify,
         })
       },
     }),

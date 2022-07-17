@@ -8,6 +8,8 @@ summary: 'The most fantastic thing in programming is finding the connection betw
 authors: ['default']
 ---
 
+[[toc]]
+
 > The third is separating them from all other ideas that accompany them in their real existence: this is called abstraction, and thus all its general ideas are made.<br /> <br />
 > John Locke, _An Essay Concerning Human Understanding_ (1690)
 

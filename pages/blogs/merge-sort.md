@@ -8,6 +8,8 @@ summary: 'Sorting plays a major role in commercial data processing and in modern
 authors: ['default']
 ---
 
+[[toc]]
+
 As we all known, __sorting__ is the process of rearranging a sequence of objects so as to put them is some logical order. Sorting doesn't only play an important role in the computer science, but also widely used in life. 
 
 Today, almost all programming languages implement the _Sort_ method in their official library. The programmer can simply invoke it with a compare logic, so it seems there is no longer any need to learn sorting algorithm. But I want to say, when we build a huge system, the ability to process detail and the ability to design the structure are both important. In some scenario, we need to build the data structure and algorithm by ourselves, only then we can improve the program's performance and resolve large problems.
@@ -20,7 +22,7 @@ There are many interesting sorting algorithm, we don't want to focus on the impl
 
 Of course, talk is cheap, let's start. 
 
-## Overview of merge sort
+# Overview of merge sort
 
 The sorting algorithm that we talk about in this section is based on a simple operation known as _merging_: __combining__ two ordered arrays to make one large ordered array. Based on it, the algorithm is super simple. We just divide a large array into two sub-array, sort the two halves recursively, and __merge__ the result.
 
@@ -30,7 +32,7 @@ We can use a diagram to illustrate the process of this algorithm.
 
 This algorithm is one of the best-known examples of the utility of the __divide-and-conquer__ paradigm of efficient algorithm design. In this kinds of strategy, we solve a problem by dividing it into pieces, solving the sub-problems, then using the solutions for the pieces to solve the whole problem.
 
-## Merge
+# Merge
 
 If we observe the diagram, we'll notice the _merge_ process, it's the core of the _merge sort_ algorithm. The goal of this method is to merge two sorted arrays.
 
@@ -57,11 +59,52 @@ fun merge(array, lo, mid, hi):
     else: copy a[j] into result .also { j++ }
 ```
 
-### Improvement
+## Improvement
 
-// TODO
+As we can see, in the above method, we use extra array to store the original array. Since when we iterate over the array, some elements may be overwritten before being accessed. Declear an extra array is a good solution, but it cause unnecessary memory waste. To address this problem, we can iterate the array from __end__ to __start__.
 
-## Top-down merge sort
+Suppose we want to merge the `nums1` and `nums2`, sorted in __non-decreasing order__. 0 is the placeholder.
+
+![](https://bebopfzj.oss-cn-hangzhou.aliyuncs.com/blog/2022-07-11-33sXcP.png)
+
+So the algorithm is easy. We iterate the `nums1` from end to start, compare the current `nums1[i]` and `nums2[j]`, put the lager one in the `nums1`.
+
+```kotlin
+// m - length of nums1, exclude 0
+// n - length of nums2
+fun merge(nums1, m, nums2, n):
+  set i = m - 1
+  set j = n - 1
+  set k = m + n - 1   // end index of nums1, include 0
+
+  while i, j is not out of scope at same time:
+    if i is out of scope:
+      set nums1[k] = nums2[j] .also { j-- }
+    if j is out of scope:
+      set nums1[k] = nums1[i] .also { i-- }
+    else if nums1[i] > nums2[j]:
+      set nums1[k] = nums1[i] .also { i-- }
+    else:
+      set nums1[k] = nums2[j] .also { j-- }
+    k--
+```
+
+We can prove that at any time, no element will be overwritten before it is access.
+At any time, there are $m - (p_1 + 1)$ elements from _nums1_ are appended into the end of _nums1_, and $n - (p_2 + 1)$ elements from _nums2_ are appended into the end of _nums1_. On the left of the $p_1$, there are $m + n - (p_1 + 1)$ positions. According this, we have:
+
+$$
+m + n - (p_1 + 1) \geq (m - (p_1 + 1)) + (n - (p_2 + 1))
+$$
+
+It's equivalent to
+
+$$
+p_2 \geq -1
+$$
+
+It's always true, so we can say, when we use this algorithm to merge 2 sorted array, there aren't element be overwritten before being accessed.
+
+# Top-down merge sort
 
 The idea of this algorithm is very simple: if it sorts two sub-arrays, it sorts the whole array, by merging together the sub-arrays. That is, the recursive code divides the array into 2 sub-arrays, and the recursive code will return and merge when the it travel to the end.
 
@@ -82,11 +125,11 @@ fun topDownMergeSort(array, lo, mid, hi):
 
 This algorithm is based on recursion. To truly understand this algorithm, we need to carefully analyze the behavior of this recursive code.
 
-### Procedures and the processes they generate
+## Procedures and the processes they generate
 
 When we talk about the recursion, the most important thing is to understand the processes it generate, otherwise we may not be able to understand it.
 
-#### Linear recursion
+### Linear recursion
 
 Let's start with factorial function, we have definition:
 $$
@@ -118,7 +161,7 @@ During the first step, the program _record_ the function calls in the _TODO list
 1. The end condition will only be reached __once__
 2. Once shrinking starts, __no__ new function calls will be pushed onto the stack
 
-#### Tree recursion
+### Tree recursion
 
 You might be curious, why we talk about the _linear recursion_? That is because it helps us understand a widely used recursion form: tree recursion. And it's also necessary to understand the _top-down merge sort_.
 
@@ -153,7 +196,7 @@ Which means the process of this function will be difference with _factorial_.
 
 As we can see, the shape of the code execution is not longer a simple _triangle_, it becomes a __tree__. Each function call that be pushed onto the stack has possibility to push new function calls onto the stack. It depends on whether the end conditions is reached or not.
 
-### The process of top-down merge sort
+## The process of top-down merge sort
 
 According the analysis above, we know if we want to understand a recursive algorithm, we need to know 2 things: 
 
@@ -186,7 +229,7 @@ It means when the recursion stop and the major part start, the __information__ o
 
 To be clear, although we use the word __'sub-array'__ to describe the results of recursive function calls, it doesn't means the algorithm creates real 2 sub-arrays. We actually only count the _index_ of original array. This tip can reduce a lot of useless execution.
 
-### Number of comparisons
+## Number of comparisons
 
 __Proposition__: Top-down merge sort uses at most $N\lg{N}$ compares to sort any array of length $N$.
 
@@ -200,7 +243,7 @@ elements. Thus each sub-array requires __at most__  $2^{n-k}$ compares for the m
 
 Thus we have $2^k * 2^{n-k} = 2^n$ total cost for __each__ of the $n$ levels, we have $n$ levels, for a total of $n2^n$. Since $2^n = N$ and $n=\lg{N}$, so we have $n2^n=N\lg{N}$
 
-## Bottom-up merge sort
+# Bottom-up merge sort
 
 Another way to implement the merge sort is to process the whole array from bottom to top. We set a tiny number as the size of sub-arrays, pass those sub-arrays pairs to the merge function, increase the size by double it, pass the new sub-arrays pairs to the merge function. Continuing until we do a merge that encompasses the whole array. The following is the pseudo-code:
 
@@ -210,7 +253,7 @@ Another way to implement the merge sort is to process the whole array from botto
 fun bottomUpMergeSort(array):
   for sz in 1..n, step sz:
     for lo in 0..(array.length-size), step sz:
-	  merge(
+      merge(
         array,  // the original array
         lo,     // start of sub array
         mid index of sub array,    // mid
@@ -229,7 +272,7 @@ A. Since the top-down is _tree traverse_ algorithm, so the size will effect each
 - Top-down merge sort: 2, 3, 2, 5, 2, 3, 2, 5, 10, 2, 3, 2, 5, 2, 3, 2, 5, 10, 20, 2, 3, 2, 5, 2, 3, 2, 5, 10, 2, 3, 2, 5, 2, 2, 4, 9, 19, 39.
 - Bottom-up merge sort: 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 4, 4, 4, 4, 4, 4, 4, 4, 4, 3, 8, 8, 8, 8, 7, 16, 16, 32, 39.
 
-## The complexity of compare-based sorting algorithm
+# The complexity of compare-based sorting algorithm
 
 __Proposition__: Compare-based sorting algorithm need _at least_ $lg{N!} \sim Nlg{N}$ to sort a array with $N$ items.
 
@@ -237,12 +280,12 @@ To prove this, we can consider the following compare tree. An _internal node_ `i
 
 ![](https://bebopfzj.oss-cn-hangzhou.aliyuncs.com/blog/202207101522827.png)
 
-It's easy to know, for a array with $N$ items, there are $N!$ different permutations, which means the compare tree have $N!$ leaves at least. If there are fewer than $N!$ leaves, them some permutations is missing from the tree. The longest path from _root_ to _leaf_ is very important since it measures the worst-case number of compares used by the algorithm.
+It's easy to know, for an array with $N$ items, there are $N!$ different permutations, which means the compare tree has $N!$ leaves at least. If there are fewer than $N!$ leaves, some permutations are missing from the tree. The longest path from the _root_ to _leaf_ is very important since it measures the worst-case number of comparisons used by the algorithm.
 
-If we fill all of these _internal nodes_ and _leaf nodes_, the compare tree will become a complete binary tree. For a complete binary tree of height $h$, it has at most that $2^h$ leaves. According to the analysis in this section, we have:
+If we fill all of these _internal nodes_ and _leaf nodes_, the compare tree will become a complete binary tree. For a complete binary tree of height $h$, it has at most $2^h$ leaves. According to the analysis in this section, we have:
 
 $$
 N! \leq number\ of\ leaves \leq 2^h
 $$
 
-The path of height $h$ corresponds the worst-case path, in other words, $h$ is precisely the worst-case number of compares. To get the scope of $h$, we take the logarithm (base 2) of both side of this equation, we will know the number of compares used by any compare-based algorithm must be __at least__ $lg{N!}$. Apply the Stirling's approximation, we have $lg{N!} \sim N\lg{N}$.
+The path of height $h$ corresponds to the worst-case path, in other words, $h$ is precisely the worst-case number of compares. To get the scope of $h$, we take the logarithm (base 2) of both sides of this equation, we will know the number of comparisons used by any compare-based algorithm must be __at least__ $lg{N!}$. Apply the Stirling's approximation, we have $lg{N!} \sim N\lg{N}$.
