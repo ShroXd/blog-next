@@ -90,7 +90,7 @@ fun merge(nums1, m, nums2, n):
 ```
 
 We can prove that at any time, no element will be overwritten before it is access.
-At any time, there are $m - (p_1 + 1)$ elements from _nums1_ are appended into the end of _nums1_, and $n - (p_2 + 1)$ elements from _nums2_ are appended into the end of _nums1_. On the left of the $p_1$, there are $m + n - (p_1 + 1)$ positions. According this, we have:
+At any time, there are $m - (p_1 + 1)$ elements from _nums1_ are appended into the end of _nums1_, and $n - (p_2 + 1)$ elements from _nums2_ are appended into the end of _nums1_. On the right of the $p_1$, there are $m + n - (p_1 + 1)$ positions. According this, we have:
 
 $$
 m + n - (p_1 + 1) \geq (m - (p_1 + 1)) + (n - (p_2 + 1))
