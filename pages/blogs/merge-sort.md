@@ -38,7 +38,7 @@ If we observe the diagram, we'll notice the _merge_ process, it's the core of th
 
 Our idea is to declare two pointers, each pointer start at the beginning of two sub-arrays.
 
-![](https://bebopfzj.oss-cn-hangzhou.aliyuncs.com/blog/202207072100573.png)
+![](https://bebopfzj.oss-cn-hangzhou.aliyuncs.com/blog/202207240853542.png)
 
 Traverse the array and compare each pair of a[i] and a[j], put the smaller item in the result array and move the pointer.
 
@@ -65,7 +65,7 @@ As we can see, in the above method, we use extra array to store the original arr
 
 Suppose we want to merge the `nums1` and `nums2`, sorted in __non-decreasing order__. 0 is the placeholder.
 
-![](https://bebopfzj.oss-cn-hangzhou.aliyuncs.com/blog/2022-07-11-33sXcP.png)
+![](https://bebopfzj.oss-cn-hangzhou.aliyuncs.com/blog/202207240855905.png)
 
 So the algorithm is easy. We iterate the `nums1` from end to start, compare the current `nums1[i]` and `nums2[j]`, put the lager one in the `nums1`.
 
