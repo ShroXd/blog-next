@@ -29,12 +29,61 @@ There are two aspects to this concept that require attention:
 
 Quick sort is a fast sorting algorithm based on the divide and conquer approach to sort the list. It works by selecting a __Pivot__ element from the array and partitioning the other elements into two sub-arrays, according to whether they are less than or greater than the pivot. The sub-arrays are then sorted recursively.
 
-![](https://bebopfzj.oss-cn-hangzhou.aliyuncs.com/blog/202207182253627.png)
-
 As we discussed, the process of quick sort can be divided into 3 steps:
 
-__Divide__:
-    1. Pick a pivot element, $A[q]$
-    2. Partition or re-arrange the array into 2 sub-arrays: $A[p,...,q-1]$ such that all elements are less than 
+1. Divide an array into sub-arrays by selecting a __pivot__ element. At this moment, we should keep the elements less than pivot are on the left side and elements greater than pivot are on the right side of the pivot.
+2. Divide the left and right sub-arrays using the same approach. Continuing this processs until each sub-arrays contains a single element.
+3. Combine elements to form a sorted array.
 
+According to above procedure, we can implement the quick sort algorithm as the following code:
 
+```kotlin
+// lo: low bounds of the array
+// hi: high bounds of the array
+fun quickSort(array, lo, hi):
+  if (hi <= lo) return
+
+  set pivot = partition(array, lo, hi)
+  quickSort(array, lo, pivot - 1)
+  quickSort(array, pivot + 1, hi)
+```
+
+As you can see, quick sort also is a recursive sorting algorithm just like merge sort. But the difference is quick sort do the two recursive calls _after_ working on the whole array. And merge sort will divide the original array in half; for quick sort, the position of the __pivot__ depends on the contents of the array.
+
+# Partition
+
+The key of the quick sort is the partition process. There are some different way to implement this process, but we will follow the general strategy:
+
+1. Chose the first position of array as the partitioning item
+2. Scan the array from _left_ end until finding an item _greater_/equal than the partiotioning item.
+3. Scan the array from _right_ end until finding an item _less_/equal than the partiotioning item.
+4. Exchange the item of two pointers, continuing in this way until _i_ and _j_ cross.
+5. Exchange the _partiotioning item_ with the rightmost item of the left sub-array.
+
+![](https://bebopfzj.oss-cn-hangzhou.aliyuncs.com/blog/202207241510917.png)
+
+According to the steps and the diagram, we have the following pseudo-code:
+
+```kotlin
+// lo: low bounds of the array
+// hi: high bounds of the array
+fun partition(array, lo, hi):
+  set i = lo
+  set j = hi + 1
+  set pivot = array[lo]
+
+  while (true):
+    while (a[++i] < pivot):
+      if (i == hi): break
+    while (a[--j] > pivot):
+      if (j == lo): break
+    
+    // two pointers cross
+    if (i >= j): break
+
+    exchange the array[i] with array[j]
+
+  exchange the pivot with array[j]
+
+  return j
+```
