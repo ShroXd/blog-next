@@ -7,8 +7,6 @@ const routes = router
   .getRoutes()
   .filter(isValidBlogs)
   .sort((a, b) => +new Date(b.meta.frontmatter.date) - +new Date(a.meta.frontmatter.date))
-
-console.log(routes)
 </script>
 
 <template>
