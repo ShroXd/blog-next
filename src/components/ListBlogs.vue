@@ -7,6 +7,8 @@ const routes = router
   .getRoutes()
   .filter(isValidBlogs)
   .sort((a, b) => +new Date(b.meta.frontmatter.date) - +new Date(a.meta.frontmatter.date))
+
+console.log(routes)
 </script>
 
 <template>
@@ -28,7 +30,7 @@ const routes = router
         :to="route.path"
       >
         <span class="text-2xl inline-block mr-3 mb-3 cursor-pointer">
-          {{ route.meta.frontmatter.title }}
+          {{ route.meta.frontmatter.title }} {{ route.meta.frontmatter.draft && ' 🚧' }}
         </span>
       </router-link>
       <div class="opacity-60 text-sm mb-1">

@@ -22,7 +22,14 @@ const route = useRoute()
       </div>
     </div>
 
-    <slot />
+    <template v-if="frontmatter.draft">
+      <div class="mt-40 mb-20 text-center text-6xl">
+        🚧
+      </div>
+    </template>
+    <template v-else>
+      <slot />
+    </template>
 
     <div v-if="isBlogPage(route)" class="text-base mt-16 icon-btn">
       <router-link :to="route.path.split('/').slice(0, -1).join('/') || '/'">

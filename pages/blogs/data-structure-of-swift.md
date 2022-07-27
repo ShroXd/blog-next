@@ -1,5 +1,5 @@
 ---
-title: 'JoJo's Bizarre Programming Language - The elements of Swift'
+title: "JoJo's Bizarre Programming Language - The elements of Swift"
 date: '2022-7-27'
 lastmod: '2022-7-27'
 tags: ['programming language', 'swift']
