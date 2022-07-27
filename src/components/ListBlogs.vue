@@ -28,7 +28,10 @@ const routes = router
         :to="route.path"
       >
         <span class="text-2xl inline-block mr-3 mb-3 cursor-pointer">
-          {{ route.meta.frontmatter.title }} {{ route.meta.frontmatter.draft && ' 🚧' }}
+          {{ route.meta.frontmatter.title }}
+          <span v-if="route.meta.frontmatter.draft">
+            🚧
+          </span>
         </span>
       </router-link>
       <div class="opacity-60 text-sm mb-1">
