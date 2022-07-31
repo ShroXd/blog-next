@@ -31,8 +31,8 @@ const route = useRoute()
       <slot />
     </template>
 
-    <div v-if="isBlogPage(route)" class="text-base mt-16 icon-btn">
-      <router-link :to="route.path.split('/').slice(0, -1).join('/') || '/'">
+    <div v-if="isBlogPage(route)" class="text-base mt-16 icon-btn ">
+      <router-link class="!no-underline" :to="route.path.split('/').slice(0, -1).join('/') || '/'">
         cd ..
       </router-link>
     </div>

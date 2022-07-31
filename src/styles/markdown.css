@@ -69,7 +69,6 @@ html.dark {
 
 .prose a {
   font-weight: inherit;
-  text-decoration: none;
   transition: color 0.3s ease-in-out;
 }
 
@@ -187,4 +186,8 @@ h6:focus .header-anchor {
 
 .table-of-contents ul > li {
   padding-left: 0.8rem;
+}
+
+.table-of-contents a {
+  text-decoration: none;
 }
