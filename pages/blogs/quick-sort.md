@@ -3,7 +3,7 @@ title: 'Algorithm Connect! Re: Dive - Quick sort'
 date: '2022-7-17'
 lastmod: '2022-7-17'
 tags: ['algorithm', 'sort']
-draft: true
+draft: false
 summary: 'Non terrae plus ultra!'
 authors: ['default']
 ---
@@ -174,3 +174,11 @@ fun partition(array, lo, hi):
 | Space complexity | $O(\log{n})$ |
 | Stability | No |
 
+# Additional
+
+If you are interested in a mathematical proof of the algorithm, you can read [this article](http://math.oxford.emory.edu/site/cs171/quickSortAnalysis/)
+
+# Reference
+
+- Algorithms 4th, 2.3 quicksort
+- [Quicksort Algorithm](https://www.programiz.com/dsa/quick-sort)
