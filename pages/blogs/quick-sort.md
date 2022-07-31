@@ -74,8 +74,10 @@ fun partition(array, lo, hi):
 
   while (true):
     while (a[++i] < pivot):
+      // right checking
       if (i == hi): break
     while (a[--j] > pivot):
+      // left checking
       if (j == lo): break
     
     // two pointers cross
@@ -83,7 +85,92 @@ fun partition(array, lo, hi):
 
     exchange the array[i] with array[j]
 
+  // Only happen when i >= j
+  // i = j, it's equal to exchange with i or j
+  // i > j, a[i] never smaller than pivot
   exchange the pivot with array[j]
 
   return j
 ```
+
+## Worest case
+
+As we can see, the `pivot` determine where the algorithm will splice original array into two sub-arrays. It's will affact the performance of algorithm significantly.
+
+If the original array is a sorted array, the `pivot` lies in an extreme end of the sorted array. Which means one sub-array is always empty and another sub-array contains `n - 1` elements. In other words, the algorithm is called only on this sub-array.
+
+So it's better to shuffle the array before sorting it. It can eliminate the impact of input on algorithm performance.
+
+```kotlin
+fun quickSort (array):
+  shuffle the array
+
+  push positive infinity to the end of the array
+  sort(array, 0, array.size - 1)
+  pop the end item of the array
+
+
+fun sort(array, lo, hi):
+  if (hi <= lo) return
+
+  val povit = partition(array, lo, hi)
+  sort(array, lo, povit - 1)
+  sort(array, povit, hi)
+
+
+// ...
+```
+
+## Bounds checking
+
+We have bounds checking to prevent pointers walk out of the scope when the smallest or largest item in the array is the pivot item. But these two checking is redundant actually.
+
+For the left checking, we know the `array[lo]` is the `pivot`, so when the `j` pointer walks to the left bounds, it's never less than the `pivot` since it's never less than itself.
+
+For the right checking, when know `i` pointer only scan the items smaller than `pivot`, so we can add a super large item at the end of array, it's will limit the movement of the pointer.
+
+So the code will be:
+
+```kotlin
+fun quickSort (array):
+  shuffle the array
+
+  push positive infinity to the end of the array
+  sort(array, 0, array.size - 1)
+  pop the end item of the array
+
+
+fun sort(array, lo, hi):
+  if (hi <= lo) return
+
+  val povit = partition(array, lo, hi)
+  sort(array, lo, povit - 1)
+  sort(array, povit, hi)
+
+
+fun partition(array, lo, hi):
+  set i = lo
+  set j = hi + 1
+  set v = a[lo]
+
+  while true:
+    while a[++i] < v: empty
+    while a[--j] > v: empty
+
+    if i >= j: break
+    exchange array[i] and array[j]
+  exchange array[lo] and array[j]
+
+  return j
+```
+
+# Complexity
+
+| | |
+| :-: | :-: |
+| Best time complexity | $O(n*\log{n})$ |
+| Worst time complexity | $O(n_2)$ |
+| Average time complexity | $O(n*\log{n})$ |
+| Space complexity | $O(\log{n})$ |
+| Stability | No |
+
