@@ -65,7 +65,37 @@ Another way is to use the __Heap__. Based on this excellent data structure, we c
 
 ## Elementary implementation
 
-// TODO
+The most straightforward way to implement a priority queue is using an array or linked list. According to the actual scenario, we can keep the data in priority queue order or unordered. The difference between these two strategies is the moment we used to find the current max/min priority level item.
+
+### Unordered array
+
+If we decide to use an array to implement the priority queue, the most vital consideration is to handle the capacity of the underlying array. Go a step further; whenever the array expands or shrinks, we must walk through the entire array and process each item. This will become a performance bottleneck when there are many items in the array.
+
+Because the array is unordered, when we want to remove and return the max priority level item, we need to iterate over the entire array, find that item, swap it with the last item of the array, and then remove it.
+
+The code is pretty straightforward, and you can refer to [this implementation](https://github.com/ShroXd/algorithm/blob/main/src/main/kotlin/sort/priorityQueues.kt#L11-L76).
+
+### Ordered array
+
+Another approach is to put the item in the ordered position, thus, the largest item is always at the end. If we want to remove and return the largest item, we can pop the last item.
+
+It's easy to think that, on the one hand, this implementation still needs to deal with the array capacity; on the other hand, the difference with the _unordered array_ is the main operational overhead that occurs when inserting new data in this approach.
+
+For the `insert` method, we can use the _bubbling policy_. Put the data at the end first, and compare it with the previous one. If the value of it is larger than the previous one, swap them; otherwise, stop the code.
+
+You can refer to [this implementation](https://github.com/ShroXd/algorithm/blob/main/src/main/kotlin/sort/priorityQueues.kt#L78-L150).
+
+### Linked list
+
+There is also a data structure that can represent a series of information, which is a _linked list_. Unlike an array, the capacity of a linked list is theoretically unlimited, which means we don't need to do the expanding or shrinking work.
+
+But the most significant disadvantage of a linked list is that we can't find an item in a linked list in $O(1)$. Of course, many improved linked lists can decrease the time complexity, but we will skip them since they are not our major topic.
+
+The `insert` and `delMax` methods are pretty straightforward. Just generate a new node using the data, and connect the new node to the front and back nodes.
+
+By the way, a common trick to implementing a linked list is to add virtual nodes before and after the linked list, so that there is no need to make tedious judgments in the code.
+
+You can refer to [this implementation](https://github.com/ShroXd/algorithm/blob/main/src/main/kotlin/sort/priorityQueues.kt#L152-L203).
 
 ## Binary Heap
 
