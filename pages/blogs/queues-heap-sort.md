@@ -45,8 +45,8 @@ _Note: there are two kinds of priority queues: the max priority and the min prio
 ```kotlin
 interface MaxPriorityQueue {
     fun isEmpty(): Boolean
-    fun insert(v: Int)
     fun max(): Int
+    fun insert(v: Int)
     fun delMax(): Int
 }
 ```
@@ -99,4 +99,75 @@ You can refer to [this implementation](https://github.com/ShroXd/algorithm/blob/
 
 ## Binary Heap
 
-// TODO
+As discussed earlier, we can also use the __heap (binary heap)__ to implement priority queues.
+
+In computer science, the heap data structure is a complete binary tree that satisfies the heap property, where any given node is:
+
+1. always greater than its child node/s, and the key of the root node is the largest among all other nodes. This property is also called __max-heap property__.
+2. always smaller than the child node/s, and the key of the root node is the smallest among all other nodes. This property is also called __min-heap property__.
+
+![](https://bebopfzj.oss-cn-hangzhou.aliyuncs.com/blog/202208171534371.png)
+
+### Representation
+
+A straightforward way to implement heap is using the node with three links. Two of them are linked to child nodes, and the third link is linked to the parent node. This design allows us to traverse the tree arbitrarily:
+
+```kotlin
+data class Node<V>(var value: V) {
+    var parent: Node<V>? = null
+    var leftChild: Node<V>? = null
+    var rightChild: Node<V>? = null
+}
+```
+
+But we notice that the _heap_ is a _complete binary tree_, so we can use an array to store it actually. If we do that, the parent of the node in position $k$ is in position $\lfloor k/2 \rfloor$ and, conversely, the two children of the node in position $k$ are in positions $2k$ and $2k+1$.
+
+![](https://bebopfzj.oss-cn-hangzhou.aliyuncs.com/blog/202208171611936.png)
+
+### Swimming and Sinking
+
+For a priority queue, the most crucial functionality is `insert` and `delMax`. 
+
+The problem we need to consider is how to maintain the properties of the head after adding or deleting elements. Recall the logic of the insertion sorting algorithm. Every time we select an array element, we compare it with the previous one. If the current element is larger than the previous one, move the current element one step forward. Otherwise, stop here.
+
+It's easy to know that any path from the root node to a leaf node is a non-decreasing sequence for a heap. So suppose if I add a random comparable element at the end of the sequence, I broke the orderliness of the sequence. How can I fix it? Yep, use the logic of the insertion sorting algorithm. Comparing, moving, stop until everything is ordered.
+
+According to the discussion above, we can design the `insert` and `delMax` methods.
+
+For the `insert`, we will put it at the end of the priority queue. Please pay attention here; when we say the __end__ of the priority queue, we mean the end of the underlying array since we use an array to represent the priority queue. It's easy to know the new element is at the leaf position of the heap; in other words, it's in __a path or a sequence__ of the heap. For now, the method's logic is pretty straightforward, just compare the new element with the previous one, move it if it's larger than the previous one, and stop until it's not. We call this procedure `swim`, and the following is the example code:
+
+```kotlin
+// this is the pointer to the current priority queue
+fun swim(index: Int) {
+    while (index > 1 && this.queue[index / 2] < this.queue[index]) {
+        swap(this.queue, index / 2, index)
+        index /= 2
+    }
+}
+```
+
+Since we just need to compare the current node with the parent node in the `swim` method, so the comparison cost of it is $\lg{n}$.
+
+For the `delMax`, it has almost the same logic as the `insert`. The only difference is that whenever we call the `delMax` for a max priority queue, we will delete and return the root node. And this logic is the same for the min priority queue. Let's think about this logic. If we delete the root node directly, the tree will be broken into two sub-trees, and it's difficult to merge two sub-trees and re-heap the result. So our strategy is to swap the root node and the last node and remove the element on the last position. After that, we can just compare the element on the root position with the two child node of it and move it on the path according to the comparison result. We call this procedure `sink`, and the following is the example code:
+
+```kotlin
+fun sink(index: Int) {
+    while (index * 2 <= this.size) {
+        val left = index * 2
+        val right = left + 1
+        
+        // Swapping the current node with one of the children will make that child node the parent of the other node. So we need to find the larger one
+        if (left < this.size && this.queue[left] < this.queue[right])
+        	left++
+        
+        // stop sink
+        if (this.queue[index] > this.queue[left])
+        	break
+        
+        swap(this.queue, index, left)
+        index = left
+    }
+}
+```
+
+Since we need to compare the current node with two children nodes per level, the worst-case comparison cost will be $∼ 2\lg{n}$.
