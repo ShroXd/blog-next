@@ -245,35 +245,45 @@ For the _Generate the ordered array_ step. Removing the max element from the hea
 
 For the _Heapify the array_ step. For a $h$ height tree, we need to process $2^{h+1}-1$ item. If we consider the worst case, for every level, every node sink to the bottom-most level.
 
-So, for $2^h$ leaves, they don't fall any levels since they already are heap. For $2^{h-1}$, each node falls $1$ level and requires $ 1 * 2^{h-1}$ exchange total. Similarly, for $2^{h-2}$, require $ 2 * 2^{h-2}$. So we have:
-$$
-\begin{eqnarray}    \label{eq}
-C(n) &=& C(2^h - 1)	\nonumber    \\
-	 &=& 2^h \cdot 0 + 2^{h-1} \cdot 1 + 2^{h-2} \cdot 2 + \cdots + 2^{h-h} \cdot h		\nonumber    \\
-	 &=& \sum_{i=0}^{h}2^{h-i} \cdot i	\nonumber    \\
-	 &=& 2^h \cdot \sum_{i=0}^{h}\frac{i}{2^i}	\nonumber    \\
-\end{eqnarray}
-$$
+So, for $2^h$ leaves, they don't fall any levels since they already are heap. For $2^{h-1}$, each node falls $1$ level and requires $1 \cdot 2^{h-1}$ exchange total. Similarly, for $2^{h-2}$, require $2 \cdot 2^{h-2}$. So we have:
+
+$$\begin{array}{c}
+C(n) &=& C(2^h - 1) \\ \\
+	 &=& 2^h \cdot 0 + 2^{h-1} \cdot 1 + 2^{h-2} \cdot 2 + \cdots + 2^{h-h} \cdot h	 \\ \\
+	 &=& \sum_{i=0}^{h}2^{h-i} \cdot i    \\ \\
+	 &=& 2^h \cdot \sum_{i=0}^{h}\frac{i}{2^i}    \\ \\
+\end{array}$$
+
 We have:
+
 $$
 \sum_{i=0}^{+\infty}x^i = \frac{1}{1-x}
 $$
+
 Taking a derivative of both sides with respect to $x$, we have:
+
 $$
 \sum_{i=0}^{+\infty}i \cdot x^{i-1} = \frac{1}{(1-x)^2}
 $$
+
 And then multiplying by $x$:
+
 $$
 \sum_{i=0}^{+\infty} i \cdot x^i = \frac{x}{(1-x)^2}
 $$
+
 If we suppose $x = \frac{1}{2}$, we have:
+
 $$
 \sum_{i=0}^{+\infty} \frac{i}{2^i} = \frac{1/2}{(1-(1/2))^2} = 2
 $$
+
 And we replace the $i=0$ with $i=h$ since it will be smaller, so we have inequalities:
+
 $$
 C(n)< 2^h \cdot 2 = 2^{h+1}
 $$
+
 Also, we have $n = 2^{h+1}-1$, so the __exchange__ cost $C(n)$ in the worst case is approximately $n$. By the way, the __comparison__ cost is $2n$.
 
 Both of these are smaller than the first step's complexity. As a result, the overall exchange and comparison costs for heapsort is $O(n\lg{n})$.
