@@ -3,7 +3,7 @@ title: 'Algorithm Connect! Re: Dive - Priority queues'
 date: '2022-8-9'
 lastmod: '2022-8-9'
 tags: ['algorithm', 'sort']
-draft: true
+draft: false
 summary: 'Priority Queue is an abstract data type that is similar to a queue, and every element has some priority value associated with it.'
 authors: ['default']
 ---
