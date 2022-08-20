@@ -12,7 +12,7 @@ authors: ['default']
 
 # Overview
 
-The heap-sort is an excellent sorting algorithm. (add more information about heap-sort) But before jumping into the algorithm, it's vital to talk about a data structure: __Priority queue__.
+**Heap sort** is a _comparison-based_ sorting technique based on the binary heap, but before jumping into the algorithm, it's vital to talk about a data structure: __Priority queue__; it can help us to understand the binary heap and the mechanism of heap sort.
 
 We will start with basic schedule theory and explain why priority queue is significant. After that, we will talk about its elementary implementation of it and a widespread implementation: binary heap representation. And of course, as two required methods of the heap, we will also talk about _sink_ and _swim_.
 
