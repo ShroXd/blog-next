@@ -4,7 +4,7 @@ date: '2022-8-9'
 lastmod: '2022-8-9'
 tags: ['algorithm', 'sort']
 draft: true
-summary: 'Sorting plays a major role in commercial data processing and in modern scientific computing'
+summary: 'Priority Queue is an abstract data type that is similar to a queue, and every element has some priority value associated with it.'
 authors: ['default']
 ---
 
@@ -171,3 +171,109 @@ fun sink(index: Int) {
 ```
 
 Since we need to compare the current node with two children nodes per level, the worst-case comparison cost will be $∼ 2\lg{n}$.
+
+### Immutable key
+
+One thing needs to be mentioned; in the previous chapters, we discussed putting the _key_ in heap order. In a real application, the key is just a symbol that indicates the priority level of the data. So the real data structure of the element will be:
+
+```kotlin
+data class QueueElement<K: Comparable<K>, V>(var key: K, val value: V)
+```
+
+Store the real information in the payload, and use the key to identify the priority of the information.
+
+You must already notice that the key is our gist to sort. So no one wants the client side to change the key unexcepted. To achieve this, we can make the keys using an __immutable class__.
+
+> *Classes should be immutable unless there's a very good reason to make them mutable. ... If a class cannot be made immutable, you should still limit its mutability as much as possible. - Joshua Bloch 
+
+# Heapsort
+
+As we discussed, in a max-heap-implemented priority queue, we can pull elements from it in descending order. It looks like a _sorting algorithm_! We can implement a new sorting algorithm based on this idea:
+
+```kotlin
+fun <T: Compare<T>> sort(array: MutableList<T>) {
+    // 1. insert the elements from array into the heap
+    // 2. pull out the elements from the heap
+}
+```
+
+It's easy to understand. And for each element insertion, the comparison cost should be $O(\lg{n})$; we have $n$ elements from _array_, so the total comparison cost for this algorithm should be $O(n\lg{n})$.
+
+But the problem is this is not an __in-place__ sorting algorithm, which means for $n$ elements, we need $2n$ memory to store them. Thus, we do want to find an _in-place_ version of this sorting algorithm, and the key is __heapify__ the array, and keep removing the current max key until we get an ordered array.
+
+## Implementation
+
+Based on the discussion above, we have transformed the problem into how to _heapify_ a random array. The key is to know that the heap is a __recursive__ data structure, which means if a tree is a heap, the left and right sub-trees are also heaps. In other words, if the left and right sub-trees are heaps, but the tree itself is not the heap, we can just invoke _sink_ for the root node to make the entire tree to be a heap.
+
+Notice that for each leaf node, since they don't have any child node, so they also meet the requirements of the heap. That means we can process the original tree from the leaf nodes to the root node, call the _sink_ for the current root node, and process level by level until we reach the root of the overall tree.
+
+Consider the following tree:
+
+![](https://bebopfzj.oss-cn-hangzhou.aliyuncs.com/blog/202208201009661.png)
+
+In this tree, we have three leaf nodes, _R_, _P_, _N_; they are heap right now, so we don't need to process them. We can just start from the _S_. A more general term is, if we want to heapify a tree, we can start from the right-most inner node at the second level from the bottom. And it's very easy to find; suppose the array has $n$ elements, and the inner node's index will be $\lfloor n/2 \rfloor$. The following is the code:
+
+```kotlin
+// n is the array.length
+for (k in n/2 downTo 1)
+	sink(k, n)
+```
+
+After we get a heap, the next task will be to generate an ordered array. But we can't just remove the top element and put it in another array since we want to implement an _in-place_ sorting algorithm. This is super easy to implement, we can just follow the logic of the _delMax_ method, exchange the root (max element) with the last element, and decrease the array's length. Keep doing it until we get the result. So the code will be:
+
+```kotlin
+fun <T: Compare<T>> sort(array: MutableList<T>) {
+    var n = array.size
+    
+    // Heapify the array
+    for (k in n/2 downTo 1)
+    	sink(k, n)
+    
+    // Generate the ordered array
+    while (n > 1) {
+        // exchange the root with the last element
+        swap(1, n--)
+        // Heapify
+        sink(1, n)
+    }
+}
+```
+
+## Analysis
+
+For the _Generate the ordered array_ step. Removing the max element from the heap needs $O(\lg{n})$ exchanges since we also need to re-heapify the array. And for $n$ elements, the exchange cost will be $O(n\lg{n})$. A detail of this step is, that the comparison cost is twice as large as exchanging cost since for a node, it will be compared with two sub-nodes but only need exchange with one of them if necessary.
+
+For the _Heapify the array_ step. For a $h$ height tree, we need to process $2^{h+1}-1$ item. If we consider the worst case, for every level, every node sink to the bottom-most level.
+
+So, for $2^h$ leaves, they don't fall any levels since they already are heap. For $2^{h-1}$, each node falls $1$ level and requires $ 1 * 2^{h-1}$ exchange total. Similarly, for $2^{h-2}$, require $ 2 * 2^{h-2}$. So we have:
+$$
+\begin{eqnarray}    \label{eq}
+C(n) &=& C(2^h - 1)	\nonumber    \\
+	 &=& 2^h \cdot 0 + 2^{h-1} \cdot 1 + 2^{h-2} \cdot 2 + \cdots + 2^{h-h} \cdot h		\nonumber    \\
+	 &=& \sum_{i=0}^{h}2^{h-i} \cdot i	\nonumber    \\
+	 &=& 2^h \cdot \sum_{i=0}^{h}\frac{i}{2^i}	\nonumber    \\
+\end{eqnarray}
+$$
+We have:
+$$
+\sum_{i=0}^{+\infty}x^i = \frac{1}{1-x}
+$$
+Taking a derivative of both sides with respect to $x$, we have:
+$$
+\sum_{i=0}^{+\infty}i \cdot x^{i-1} = \frac{1}{(1-x)^2}
+$$
+And then multiplying by $x$:
+$$
+\sum_{i=0}^{+\infty} i \cdot x^i = \frac{x}{(1-x)^2}
+$$
+If we suppose $x = \frac{1}{2}$, we have:
+$$
+\sum_{i=0}^{+\infty} \frac{i}{2^i} = \frac{1/2}{(1-(1/2))^2} = 2
+$$
+And we replace the $i=0$ with $i=h$ since it will be smaller, so we have inequalities:
+$$
+C(n)< 2^h \cdot 2 = 2^{h+1}
+$$
+Also, we have $n = 2^{h+1}-1$, so the __exchange__ cost $C(n)$ in the worst case is approximately $n$. By the way, the __comparison__ cost is $2n$.
+
+Both of these are smaller than the first step's complexity. As a result, the overall exchange and comparison costs for heapsort is $O(n\lg{n})$.
