@@ -216,6 +216,33 @@ fun get(node: Node<K, V>?, key: K): V? {
 
 It's easy to know that the `get` method follows one __path__ of the binary search tree when it seeks the given key. Thus the comparisons' number is one more than the depth of the given node if it exists in the binary search tree, and the worst-case number of comparison s is one more than the tree's height. For a __perfectly balanced__ binary search tree of $n$ nodes, the comparison number will be $\sim lg{n}$.
 
+Similar to the `get` method, we must find the location for the insertion by comparing each node's key with the given key; thus, most codes of `put` are the same as `get`. But the `get` method has two __base cases__. The first is that when the position we seek already has a node, we need to update the value of that node. This logic also follows the property of the symbol table: uniquid key. The second is that when the pointer reaches the leaf node but still hasn't found the position, we need to create a _new_ node, put it under the current leaf node, and make it follow the property of the binary search tree. The following is the code:
+
+```kotlin
+fun put(node: Node<K, V>?, key: K, value: V): Node<K, V> {
+    if (node == null) {
+        size++
+        return Node(key, value)
+    }
+    
+    val gap: Int = key.compareTo(node.key)
+    if (gap > 0) {
+        // link the tree's ndoes
+        node.right = put(node.right, key, value)
+    } else if (gap < 0) {
+        node.left = put(node.left, key, value)
+    } else {
+        node.value = value
+    }
+    
+    return node
+}
+```
+
+Similar to the `put` method, the comparison cost $\sim \lg{n}$ for a perfectly balanced tree of $n$ nodes.
+
+Finally, we noticed that the speed of binary search trees' `get` and `put` is extremely fast. :tada:
+
 ## Hibbard deletion
 
 // TODO
