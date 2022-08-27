@@ -7,6 +7,7 @@ specifiers:
   '@intlify/vite-plugin-vue-i18n': ^3.2.1
   '@types/diacritics': ^1.3.1
   '@types/fs-extra': ^9.0.13
+  '@types/markdown-it-emoji': ^2.0.2
   '@types/markdown-it-link-attributes': ^3.0.1
   '@types/nprogress': ^0.2.0
   '@vitejs/plugin-vue': ^2.0.1
@@ -23,6 +24,7 @@ specifiers:
   gray-matter: ^4.0.3
   https-localhost: ^4.7.0
   markdown-it-anchor: ^8.6.4
+  markdown-it-emoji: ^2.0.2
   markdown-it-latex: ^0.2.0
   markdown-it-link-attributes: ^3.0.0
   markdown-it-prism: ^2.2.1
@@ -52,11 +54,13 @@ specifiers:
 dependencies:
   '@iktakahiro/markdown-it-katex': registry.npmmirror.com/@iktakahiro/markdown-it-katex/4.0.1
   '@types/diacritics': registry.npmmirror.com/@types/diacritics/1.3.1
+  '@types/markdown-it-emoji': registry.npmmirror.com/@types/markdown-it-emoji/2.0.2
   '@vueuse/core': 7.3.0_vue@3.2.26
   '@vueuse/head': 0.7.4_vue@3.2.26
   dayjs: registry.npmmirror.com/dayjs/1.10.7
   diacritics: registry.npmmirror.com/diacritics/1.3.0
   markdown-it-anchor: registry.npmmirror.com/markdown-it-anchor/8.6.4
+  markdown-it-emoji: registry.npmmirror.com/markdown-it-emoji/2.0.2
   markdown-it-latex: registry.npmmirror.com/markdown-it-latex/0.2.0
   markdown-it-table-of-contents: registry.npmmirror.com/markdown-it-table-of-contents/0.6.0
   nprogress: 0.2.0
@@ -1457,7 +1461,7 @@ packages:
         optional: true
     dependencies:
       '@intlify/bundle-utils': registry.npmmirror.com/@intlify/bundle-utils/3.1.0_vue-i18n@9.1.9
-      '@intlify/shared': registry.npmmirror.com/@intlify/shared/9.2.0-beta.36
+      '@intlify/shared': registry.npmmirror.com/@intlify/shared/9.2.0-beta.40
       '@rollup/pluginutils': 4.1.1
       debug: 4.3.2
       fast-glob: 3.2.7
@@ -6631,8 +6635,8 @@ packages:
       vue-i18n:
         optional: true
     dependencies:
-      '@intlify/message-compiler': registry.npmmirror.com/@intlify/message-compiler/9.2.0-beta.36
-      '@intlify/shared': registry.npmmirror.com/@intlify/shared/9.2.0-beta.36
+      '@intlify/message-compiler': registry.npmmirror.com/@intlify/message-compiler/9.2.0
+      '@intlify/shared': registry.npmmirror.com/@intlify/shared/9.2.0
       jsonc-eslint-parser: registry.npmmirror.com/jsonc-eslint-parser/1.4.1
       source-map: registry.npmmirror.com/source-map/0.6.1
       vue-i18n: 9.1.9_vue@3.2.26
@@ -6650,13 +6654,13 @@ packages:
       source-map: registry.npmmirror.com/source-map/0.6.1
     dev: false
 
-  registry.npmmirror.com/@intlify/message-compiler/9.2.0-beta.36:
-    resolution: {integrity: sha512-u4EwW/U9Mc50G7vM1p24UQ3aPrrkm0eM60xKRLVib1XKpH+TK8taLeetSVPI/8mNOBkLNpXmysMfhD3HlsXHIA==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@intlify/message-compiler/-/message-compiler-9.2.0-beta.36.tgz}
+  registry.npmmirror.com/@intlify/message-compiler/9.2.0:
+    resolution: {integrity: sha512-KGwwZsl+Nw2O26ZOKdytncxzKnMZ236KmM70u4GePgbizI+pu8yAh0apKxljSPzEJ7WECKTVc9R+laG12EJQYA==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@intlify/message-compiler/-/message-compiler-9.2.0.tgz}
     name: '@intlify/message-compiler'
-    version: 9.2.0-beta.36
-    engines: {node: '>= 12'}
+    version: 9.2.0
+    engines: {node: '>= 14'}
     dependencies:
-      '@intlify/shared': registry.npmmirror.com/@intlify/shared/9.2.0-beta.36
+      '@intlify/shared': registry.npmmirror.com/@intlify/shared/9.2.0
       source-map: registry.npmmirror.com/source-map/0.6.1
     dev: true
 
@@ -6667,11 +6671,18 @@ packages:
     engines: {node: '>= 10'}
     dev: false
 
-  registry.npmmirror.com/@intlify/shared/9.2.0-beta.36:
-    resolution: {integrity: sha512-+IXLiQ0V+9muzEf7RT9t9wEh6hNIK+kq+34Lce8W+DYny/jaFxPWIU4REYja3xC16kV7q+fz4I3vFz03gh7ysA==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@intlify/shared/-/shared-9.2.0-beta.36.tgz}
+  registry.npmmirror.com/@intlify/shared/9.2.0:
+    resolution: {integrity: sha512-71uObL3Sy2ZiBQBMVETbkspE4Plpy87Hvlj6FAUF3xdD+M82tuxe3MVJjaD3ucqhtHmQWBkAWEurVLdPYr8G2g==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@intlify/shared/-/shared-9.2.0.tgz}
     name: '@intlify/shared'
-    version: 9.2.0-beta.36
-    engines: {node: '>= 12'}
+    version: 9.2.0
+    engines: {node: '>= 14'}
+    dev: true
+
+  registry.npmmirror.com/@intlify/shared/9.2.0-beta.40:
+    resolution: {integrity: sha512-xWz+SFjgt/LfaSbbHVn+V7gmvX4ZNP3cIFta790GWZ/tEgwJeC3tkV7i45iUbZ4ZimOerFgKH05b7qvJlKb6RQ==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@intlify/shared/-/shared-9.2.0-beta.40.tgz}
+    name: '@intlify/shared'
+    version: 9.2.0-beta.40
+    engines: {node: '>= 14'}
     dev: true
 
   registry.npmmirror.com/@types/diacritics/1.3.1:
@@ -6687,6 +6698,35 @@ packages:
     dependencies:
       '@types/node': registry.npmmirror.com/@types/node/16.9.2
     dev: true
+
+  registry.npmmirror.com/@types/linkify-it/3.0.2:
+    resolution: {integrity: sha512-HZQYqbiFVWufzCwexrvh694SOim8z2d+xJl5UNamcvQFejLY/2YUtzXHYi3cHdI7PMlS8ejH2slRAOJQ32aNbA==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@types/linkify-it/-/linkify-it-3.0.2.tgz}
+    name: '@types/linkify-it'
+    version: 3.0.2
+    dev: false
+
+  registry.npmmirror.com/@types/markdown-it-emoji/2.0.2:
+    resolution: {integrity: sha512-2ln8Wjbcj/0oRi/6VnuMeWEHHuK8uapFttvcLmDIe1GKCsFBLOLBX+D+xhDa9oWOQV0IpvxwrSfKKssAqqroog==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@types/markdown-it-emoji/-/markdown-it-emoji-2.0.2.tgz}
+    name: '@types/markdown-it-emoji'
+    version: 2.0.2
+    dependencies:
+      '@types/markdown-it': registry.npmmirror.com/@types/markdown-it/12.2.3
+    dev: false
+
+  registry.npmmirror.com/@types/markdown-it/12.2.3:
+    resolution: {integrity: sha512-GKMHFfv3458yYy+v/N8gjufHO6MSZKCOXpZc5GXIWWy8uldwfmPn98vp81gZ5f9SVw8YYBctgfJ22a2d7AOMeQ==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@types/markdown-it/-/markdown-it-12.2.3.tgz}
+    name: '@types/markdown-it'
+    version: 12.2.3
+    dependencies:
+      '@types/linkify-it': registry.npmmirror.com/@types/linkify-it/3.0.2
+      '@types/mdurl': registry.npmmirror.com/@types/mdurl/1.0.2
+    dev: false
+
+  registry.npmmirror.com/@types/mdurl/1.0.2:
+    resolution: {integrity: sha512-eC4U9MlIcu2q0KQmXszyn5Akca/0jrQmwDRgpAMJai7qBWq4amIQhZyNau4VYGtCeALvW1/NtjzJJ567aZxfKA==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@types/mdurl/-/mdurl-1.0.2.tgz}
+    name: '@types/mdurl'
+    version: 1.0.2
+    dev: false
 
   registry.npmmirror.com/@types/node/16.9.2:
     resolution: {integrity: sha512-ZHty/hKoOLZvSz6BtP1g7tc7nUeJhoCf3flLjh8ZEv1vFKBWHXcnMbJMyN/pftSljNyy0kNW/UqI3DccnBnZ8w==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@types/node/download/@types/node-16.9.2.tgz}
@@ -7076,6 +7116,12 @@ packages:
     peerDependencies:
       '@types/markdown-it': '*'
       markdown-it: '*'
+    dev: false
+
+  registry.npmmirror.com/markdown-it-emoji/2.0.2:
+    resolution: {integrity: sha512-zLftSaNrKuYl0kR5zm4gxXjHaOI3FAOEaloKmRA5hijmJZvSjmxcokOLlzycb/HXlUFWzXqpIEoyEMCE4i9MvQ==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/markdown-it-emoji/-/markdown-it-emoji-2.0.2.tgz}
+    name: markdown-it-emoji
+    version: 2.0.2
     dev: false
 
   registry.npmmirror.com/markdown-it-latex/0.2.0:

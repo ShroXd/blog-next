@@ -19,6 +19,7 @@ import LinkAttributes from 'markdown-it-link-attributes'
 // @ts-expect-error missing types
 import TOC from 'markdown-it-table-of-contents'
 import anchor from 'markdown-it-anchor'
+import emoji from 'markdown-it-emoji'
 import fs from 'fs-extra'
 import matter from 'gray-matter'
 
@@ -133,6 +134,7 @@ export default defineConfig({
           includeLevel: [1, 2, 3],
           slugify,
         })
+        md.use(emoji)
       },
     }),
 
