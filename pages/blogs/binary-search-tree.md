@@ -35,11 +35,11 @@ The following is an example of a symbol table:
 According to the discussion above, we have the following interface design.
 
 ```kotlin
-interface SymbolTable(Key, Value) {
-    fun put(k: Key, v: Value)
-    fun get(k: Key): Value?
-    fun delete(k: Key)
-    fun contains(k: Key): Boolean
+interface SymbolTable(K, V)<K: Comparable<K>, V> {
+    fun get(k: K): V?
+    fun put(k: K, v: V)
+    fun delete(k: K)
+    fun contains(k: K): Boolean
     fun isEmpty(): Boolean
 }
 ```
@@ -176,7 +176,45 @@ fun <K, V> traverse(node: Node<K, V>?, visit: (node: Visit) {
 
 ## Get & put methods
 
-// TODO
+As one kind of implementation of the symbol table, the binary search tree must be able to store key-value pairs. To implement those, we need to implement these methods in the interface:
+
+```kotlin
+interface SymbolTable(K, V)<K: Comparable<K>, V> {
+    fun get(k: K): V?
+    fun put(k: K, v: V)
+    
+    // ...
+}
+```
+
+As you can see in the definition of the interface, the _upper bound_ of the generic key `Key` is the `Comparable<T>`. This, of course, allows us to compare the keys in the binary search tree with any key for which we might be searching. Based on this design, we can take advantage of the properties of the binary search tree to implement the `get` method. Consider the following example:
+
+![](https://bebopfzj.oss-cn-hangzhou.aliyuncs.com/blog/202208270945218.png)
+
+Suppose we seek the node with the key _R_, the green node. We know the entire binary search tree has only one reference to the node _S_ identified as _root_. To seek _R_, we need to start from the root node. Thus, we create a pointer and point it to the root node S.
+
+Compare the node's key pointed by the pointer with what we want, noting that $R < S$. Since in the binary search tree, the nodes' key in the left sub-tree is smaller than the current topped node's key, we can infer that _R_ is never in the right sub-tree. Thus we make the pointer point to the _E_. Continue the above logic; the pointer will point to the right sub-tree of `E`. We find, at that moment, it is equal to our target. We're done.
+
+But at this point, we immediately think, if the key we are searching for is not in the binary search tree, how to know that? Well, it's pretty easy. Suppose we seek the node with the key _F_; after going through similar steps as above, the pointer points to node _R_. We find the _R_ is a leaf node, which means it has no sub-tree, and the value `left` and `right` are both `null`. At that moment, we can say, _F_ is not in the current binary search tree. By the way, this is the worst case of `get` methods.
+
+According to the discussion above, we can implement the `get`:
+
+```kotlin
+fun get(node: Node<K, V>?, key: K): V? {
+    if (node == null) return null
+    
+    val gap: Int = key.compareTo(node.key)
+    return if (gap > 0) {
+        get(node.right, key)
+    } else if (gap < 0) {
+        get(node.left, key)
+    } else {
+        node.value
+    }
+}
+```
+
+It's easy to know that the `get` method follows one __path__ of the binary search tree when it seeks the given key. Thus the comparisons' number is one more than the depth of the given node if it exists in the binary search tree, and the worst-case number of comparison s is one more than the tree's height. For a __perfectly balanced__ binary search tree of $n$ nodes, the comparison number will be $\sim lg{n}$.
 
 ## Hibbard deletion
 
