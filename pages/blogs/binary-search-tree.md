@@ -4,7 +4,7 @@ date: '2022-8-24'
 lastmod: '2022-8-24'
 tags: ['algorithm', 'search']
 draft: false
-summary: 'TODO'
+summary: 'Binary Search Tree is a node-based binary tree data structure, smaller node in the left and larger node in the right'
 authors: ['default']
 ---
 
