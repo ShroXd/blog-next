@@ -241,11 +241,65 @@ fun put(node: Node<K, V>?, key: K, value: V): Node<K, V> {
 
 Similar to the `put` method, the comparison cost $\sim \lg{n}$ for a perfectly balanced tree of $n$ nodes.
 
-Finally, we noticed that the speed of binary search trees' `get` and `put` is extremely fast. :tada:
+Finally, we noticed that binary search trees' `get` and `put` speed is extremely fast. :tada:
 
 ## Hibbard deletion
 
-// TODO
+We already implemented the `put` to insert new elements into the binary search tree, but how do we delete them? Like the _heap_, after deleting, we must keep the new tree as a binary search tree. One efficient way to do this was implemented by [Thomas Hibbard](https://en.wikipedia.org/wiki/Thomas_N._Hibbard) in 1962. The idea is to swap the node to be deleted with its __successor__. The successor is the _following_ largest key in the tree; in other words, it's the minimum key in the right sub-tree of the node to be deleted.
+
+To implement this procedure, we need to implement `delMin` first. This function will delete the minimum key in the right sub-tree of a given node. Since the elementary property of the binary search tree is for any given node, the nodes larger than the given node are in the right sub-tree, and the nodes smaller than the given node are in the left sub-tree. Thus we can choose the left sub-tree recursively until the value of the left pointer is `null`. If the current node has a right sub-tree, it should be the left sub-tree of the previous node since all nodes are smaller than the previous node.
+
+![](https://bebopfzj.oss-cn-hangzhou.aliyuncs.com/blog/202208281601191.png)
+
+Suppose we want to use the procedure `delMin` for node __E__. The minimum node of E is __H__ (Since it doesn't have a left sub-tree). Thus we can delete it, but after that, we need to process __M__, which is the right sub-tree of __H__. Note that since __M__ is in the right sub-tree, it's bigger than __H__. But since __H__ is in the left sub-tree of __R__, all node in this left sub-tree is smaller than __R__. In summary, __M__ will be the left tree of __R__. The following is the code:
+
+```kotlin
+fun delMin(n: Node<K, V>) {
+    if (n.left == null) return n.right
+    
+    n.left = delMin(n.left)
+    n.count = 1 + size(n.left) + size(n.right)
+    
+    return n
+}
+```
+
+With this procedure, we can understand the Hibbard deletion easily.
+
+The first step of the deletion is to find the node we want to delete. It's easy since we have implemented it in the previous methods. The second step is to find the _successor_ of the given node, which is in the right sub-tree. Note that the _successor_ is the minimum node in the right sub-tree; in other words, all node in the right sub-tree is __larger__ than the _successor_. Thus we can put it in the same position as the given node. After this step, we will have two successor nodes, as shown in the following diagram (H is the successor of E).
+
+![](https://bebopfzj.oss-cn-hangzhou.aliyuncs.com/blog/202208281620153.png)
+
+So we can invoke `delMin` on the given node and delete that original _successor_. And then delete the given node.
+
+The following is the code:
+
+```kotlin
+fun delete(node: Node<K, V>, key: K) {
+    if (node == null) return null
+    
+    val gap: Int = key.compareTo(node.key)
+    if (gap > 0) {
+        n.right = delete(n.right, key)
+    } else if (gap < 0) {
+        n.left = delete(n.left, key)
+    } else {
+        // Since the given node doesn't have successor
+        // Return the left sub-tree and this does NOT destroy the BST
+        if (node.right == null) return n.left
+        
+        val temp: Node<K, V> = node
+        // Find the successor and put it in the given key's position
+        node = min(temp.right)
+        node.right = deleteMin(t.right)
+        node.left = t.left
+    }
+    
+    node.count = size(node.left) + size(node.right) + 1
+    
+    return node
+}
+```
 
 # The connection between BST and quick sort
 
