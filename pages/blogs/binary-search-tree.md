@@ -3,7 +3,7 @@ title: 'Algorithm Connect! Re: Dive - Binary Search Tree'
 date: '2022-8-24'
 lastmod: '2022-8-24'
 tags: ['algorithm', 'search']
-draft: true
+draft: false
 summary: 'TODO'
 authors: ['default']
 ---
@@ -50,7 +50,7 @@ Generally, we need the ability to _add_, _get_ and _delete_ elements from the da
 
 The most straightforward way is using the _unordered linked list_. Each node has three fields: key, value, and the pointer to the next node. The _get_ is straightforward; just traversal the linked list and find the given key. But the problem is, in the worst case of the _get_ method, we need to traverse the entire list, and it requires $\sim n$ comparisons. On average, it requires $\sim n/2$ comparisons. Similarly, we need to check if the given key exists in the linked list when the client adds a new element; that said, the comparisons for this process will be $\sim n$.
 
-Another opposite way is to use the _ordered array_. It's straightforward to search for a given key in an ordered array. Just traverse it! Going further, since it's an ordered array, we can use the __binary search__ to decrease time complexity. It can make both the average and worst-case number of comparison $\sim \lg{n}$. But this is an array after all; in other words, when inserting a new element, we need to move all subsequent elements. Consequently, the insertion cost is still $\sim n$ in the worst case and $\sim n/2$ on average.
+Another opposite way is to use the _ordered array_. It's straightforward to search for a given key in an ordered array. Just traverse it! Going further, since it's an ordered array, we can use the __binary search__ to decrease time complexity. It can make both the average and worst-case number of comparison $\sim \lg{n}$. But this is an array after all; in other words, when inserting a new element, we need to move all the following elements. Consequently, the insertion cost is still $\sim n$ in the worst case and $\sim n/2$ on average.
 
 # Binary search tree
 
@@ -170,7 +170,7 @@ fun <K, V> traverse(node: Node<K, V>?, visit: (node: Visit) {
 
 ## Rank operations
 
-According to the discussion above, it's easy to know the smallest key in the tree is the most left node of the tree and the largest key is the most right. But how to get the 10th node? Or further, suppose we use the binary search tree to hold the names of runners and use the time of the runners in a race to be the key. Can we find the _rank_ associated with a given time scope?
+According to the discussion above, it's easy to know the smallest key in the tree is the most left node of the tree and the largest key is the most right. But how to get the 10th node? Or, suppose we use the binary search tree to hold the runners' names and use the time of the runners in a race to be the key. Can we find the _rank_ associated with a given time scope?
 
 Let's consider this scenario the minimum key has rank 0, the next smallest has rank 1, and so on. In doing so, we can infer the _rank_ of any key is equal to the number of keys in the tree __less__ than that key. Thus, we can implement a function to find the rank of any given key:
 
@@ -343,10 +343,15 @@ fun delete(node: Node<K, V>, key: K) {
 
 # The connection between BST and quick sort
 
-// TODO
+After we understand the mechanism of the binary search tree, for a perfectly balanced binary tree, the inserting procedure needs $\lfloor \lg{n} \rfloor$ times comparison to insert a new node. But worst case, if we insert a series of ordered numbers, each number must compare with all previous numbers. In general, we have:
+$$
+1 + 2 + 3 + 4 + \dots + (n + 1) = \frac{n(n-1)}{2}
+$$
+Thus we can say the comparison required to insert $n$ elements in order is $O(n^2)$. To prevent this scenario, we can shuffle the order of elements _randomly_. You may notice it now at this point. Yep, same situation we encountered when we discussed the __quick sorting__!
 
-
+We have an array with the same number of comparisons when we insert them into an empty binary search tree as the number of comparisons of another array when we invoke a quick sorting algorithm. Of course, another array has the same elements. One example is _C, B, A, G, F, D, E_ and _C, A, G, E, D, B, F_.
 
 # Reference
 
 - [Data Structures - Lists, Dictionaries](https://vt.instructure.com/courses/27918/pages/book-4-dot-2-data-structures-lists-dictionaries#dictionaries)
+- [The Department of Mathematics and Computer Science - Data Structures - Binary Search Tree](http://math.oxford.emory.edu/site/cs171/binarySearchTrees/)
