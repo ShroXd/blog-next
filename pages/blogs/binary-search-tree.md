@@ -168,11 +168,51 @@ fun <K, V> traverse(node: Node<K, V>?, visit: (node: Visit) {
 }
 ```
 
-
-
 ## Rank operations
 
-// TODO
+According to the discussion above, it's easy to know the smallest key in the tree is the most left node of the tree and the largest key is the most right. But how to get the 10th node? Or further, suppose we use the binary search tree to hold the names of runners and use the time of the runners in a race to be the key. Can we find the _rank_ associated with a given time scope?
+
+Let's consider this scenario the minimum key has rank 0, the next smallest has rank 1, and so on. In doing so, we can infer the _rank_ of any key is equal to the number of keys in the tree __less__ than that key. Thus, we can implement a function to find the rank of any given key:
+
+```kotlin
+fun rank(node: Node<K, V>, key: K): Int {
+    if (node == null) return 0
+    
+    val gap: Int = key.compareTo(node.key)
+    return if (gap > 0) {
+        1 + size(node.left) + rank(node.right, key)
+    } else if (gap < 0) {
+        rank(node.left, key)
+    } else {
+        size(node.left)
+    }
+}
+```
+
+The `size` procedure will return the number of nodes in the sub-tree of a given node.
+
+Of course, following the logic, we can implement the opposite procedure, which is to find the key of a given rank.
+
+```kotlin
+fun key(node: Node<K, V>, rank: Int): K {
+    if (node == null) return null
+    
+    val numOfLeftTree: Int = size(n.size)
+    return if (numOfLeftTree > rank) {
+        // current node's rank is larger than the given rank
+        // thus we nned to choose the left sub-tree
+        key(node.left, rank)
+    } else if (numOfLeftTree < rank) {
+        // Jump to right sub-tree, we don't num of left tree and current tree
+        // Suppose the given rank is 12, and current node's rank is 10
+        // Note that 12th is also the 2ed after 10th
+        key(node.right, rank - numOfLeftTree - 1)
+    } else {
+        // Here it is!
+        return node
+    }
+}
+```
 
 ## Get & put methods
 
