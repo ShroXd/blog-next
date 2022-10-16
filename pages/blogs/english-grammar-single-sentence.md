@@ -14,7 +14,7 @@ authors: ['default']
 
 和编程语言一样，为了理解英语这门自然语言，也需要先理解这个系统的基本组成元素。在这个基础上，才能进一步理解这些元素可以如何被组合，如何被抽象。而单句作为英语中一切句子的起点。所以理解单句的组成和各种变化是至关重要的。所有的细节在《旋元佑文法》中已经有了很好的阐述，而这篇文章则是对这些内容做一总结。
 
-因为这本书并不面向学术，所以采取了许多近似处理来让语法规则变的更加简单。这会损失一些严谨性，但却极大的提升了语法理论的可理解度。
+因为这本书并不力求学术上的严谨，所以采取了许多近似处理来让语法规则变的更加简单。这可以极大的降低语法理论的复杂度，让其变得易于理解。
 
 另一方面，尽管有不同的理论来阐述英文语法，但这并不意味着像英语这种自然语言是被严格设计出来的。所有的语法实际上都是为了表达。这个观念对于理解语法理论是很重要的。
 
@@ -156,13 +156,137 @@ authors: ['default']
 
 其中，分离副词指的是那类修饰整个句子的副词，例如句1。但我们也可以将其理解为子句的方法状态副词，例如句2。
 
-介系词。与名词组成介系词片语。该片语可以充当形容词或副词。
+## 动状词
 
-分词。充当形容词。分为现在分词与过去分词。现在分词为主动语态，表示正在进行的动作。过去分词为被动语态，表示完成的动作。
+在英语中，动状词指分词、动名词与不定词片语。这些词具有动词的特性，即可以拥有受词或被副词修饰，但在句子中扮演名词或形容词的角色。这种语法元素主要是因为表达的需求而出现的。
 
-动名词。充当名词。指代动作或事情。
+### 分词
 
-不定词片语。充当名词。可视为语气助动词减化后的结果，同样具有不确定的语气。
+分词分为现在分词 Ving 与过去分词 Ven。一般作为形容词出现。其中现在分词 Ving 与普通形容词的区别是 -ing 词尾带有主动语态、进行状态的暗示。过去分词 Ven 则有被动语态、完成状态的暗示。除了这两种基本结构，还有一种 have + Ven 完成式的动词片语。
 
+对于结构简单的分词，我们一般将其视为动词的词类变化来看待。此时我们一般将 be 动词视为句子的唯一限定动词，而语态、状态由分词表达。例如这两个句子：
 
+1. The book is selling well.
+2. The book is well written.
 
+严格来说，这种理解并不正确，考虑如下两个句子：
+
+1. The man was *dressed* by his valet this morning.
+2. He is *dressed* in blue now.
+
+句 1 为过去式的被动语态，句子的核心是动词片语 was dressed。句 2 中 dressed 为过去分词作形容词，而 is 为限定动词，为一般式。可以看出分词作为动词和形容词是有一些差异的。但我们可以忽略这个以求语法理论的简单清晰。换句话说，上面两个句子都可以这样解释：be 动词为句子的限定动词，其状态表达主词的人称以及句子的时态。后面的分词为形容词，做主词补语。另外的，过去分词表示被动、完成的概念。
+
+另外的，对于结构较为复杂的则视为减化子句来看待。
+
+### 动名词
+
+动名词的形式为 Ving，在句子中充当名词。动名词指代一个动作、一件事情。这个语法元素出现的原因是某些动作没有对应的名词，所以将动词改造为名词来使用。例如：
+
+1. Fishing requires a lot of patience.
+2. I love swimming.
+
+形式上，动名词与现在分词一致。这很容易造成混淆。我们可以从这两种词的特性上理解。现在分词充当形容词使用，同时其 -ing 词尾暗示主动、进行。动名词作为名词，且不具备这种暗示。考虑如下两个句子：
+
+1. Rising costs have finally forced the company to fold.
+2. The raising of prices is going to scare off some customers.
+
+句 1 中，表达**正在**上涨的支出，是现在分词。而句 2 中指代上涨这件事情，同时介系词 of 说明了这个是价格的上涨，也就是说，此处的 raising 为动名词。
+
+如果从双方可以占据的位置考虑，我们知道作为形容词的现在分词可以放入名词片语和补语中。而作为名词的动名词也同样可以放在这两处位置。
+
+首先，在名词片语中，检验一个词是否为现在分词，可以将其放在补语中。
+
+- Those swimming swans came from Siberia.
+- Those swans were swimming.
+
+检验是否为动名词则可以将其放在介系词后面。
+
+- That swimming pool is always crowded.
+- A pool for swimming.
+
+其次，在补语位置。处于补语位置的名词和主词在语法上等效。换句话说，我们可以将他们对换。
+
+1. The most important industry in Macao is gambling.
+    - Gambling is the most important industry.
+2. Many customers were gambling in the casino at the time.
+
+### 不定词片语
+
+不定词片语可视为语气助动词减化后的结果，同样具有不确定的语气。我们将会在稍后详细讨论语气助动词，但它们是一类助动词，与动词组成动词片语，表达条件语气，具有不确定性。而所有的语气助动词都可以转变为不定词：
+
+| 语气助动词 | 不定词片语 |
+| :-: | :-: |
+| must | have to |
+| should | ought to |
+| will/should | be going to/be willing to |
+| can/could | be able to |
+| may/might | be likely to | be allowed to |
+
+不定词片语在句子中可以充当名词片语、形容词片语和副词片语。我们可以像使用这些基本语法结构一样使用不定词片语：
+
+**作为名词片语**：
+
+1. To be accurate is very important.
+    - should be accurate.
+2. The manager decided to carry out the plan.
+    - would carry out the plan.
+3. The best strategy is to stay put.
+    - To stay put is the best strategy.
+
+**作为形容词片语**：
+
+4. To night I have some important work to do.
+    - 修饰 work，后置形容词
+5. You are *to report* to the General immediately.
+6. Jane wanted her boyfriend *to leave* her alone.
+    - 受词 boyfriend 的补语
+
+**作为副词片语**：
+
+7. The agent called the movie start to tell her about the new movie.
+8. Your question is easy to answer.
+9. The child is old enough to look after herself now.
+
+如果不定词所在的句子需要表示相对过去的时间，那么就需要用到完成式 to have Ven。因为不定词片语并不能表达时间。
+
+1. I am fortunate to have been born into a good family.
+2. The dog seemed to have been hit by a car.
+
+另外的，使役动词和感官动词后的受词补语如果需要使用不定词片语，则需要省略 to。因为这两种动词在句意上都表达了实际上发生的事情，所以我们不需要弱化的语气助动词 to。
+
+1. I begged him to help me, but he wouldn't.
+2. I'll make him pay for this.
+3. I saw the car run over a dog.
+
+但注意到使役动词和感官动词并不意味着永远是动词原形，因为后面的元素也有可能是分词。
+
+1. He had the garden party going.
+2. I felt my wallet touched.
+3. I felt cold rain streaming down my back.
+
+### 动名词与不定词片语的使用
+
+在该使用动名词还是不定词的问题上，除了积累单词外，一个重要的理解是注意到不定词作为语气助动词片语的减化，同时还有不确定的意思。而动名词则是当*一件事情*看待。
+
+**一些动名词与不定词片语皆可的场景**：
+
+1. The man began playing / to play bridge.
+2. I like traveling / to travel to different places.
+
+**只能用不定词**：
+
+- I would like to take the afternoon off.
+
+注意到此句表的是**想要**。这意味着事情并没有确定下来，所以使用了不定词片语表达这种不确定性。
+
+**只能用动名词**：
+
+动名词接近名词，也就是说可以组成自己的名词片语。
+
+1. He gave up without trying.
+2. I enjoy eating ice cream.
+3. He practiced playing the violin every afternoon.
+4. I dislike having to carry a lot of books with me.
+5. You should avoid making the same mistake twice.
+
+对于后面 4 句，我们翻译一下就可以发现，重点都在表达动作本身，没有表达不确定语气的场景。
