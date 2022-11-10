@@ -68,7 +68,52 @@ The second scenario is there is a 3-node upstairs. The 3-node can absorb `v`, bu
 
 ## Deletion
 
-Deletion is similar to insertion. We need to find the parent of the node to be deleted first, delete the target then, and fix the tree if necessary.
+The first step of deletion is to find the target in the 2-3 tree; as we discussed, it's pretty straightforward. There are two scenarios for the target key, it can be in 2-node or 3-node. When it's in the 2-node, the deletion algorithm will be as same as it of the binary search tree. In that case, we need to swap it with the in-order successor and delete it. By the way, the key to understanding that algorithm is the in-order successor is the smallest key in the right subtree. Thus if you swap it with the target, the values in the right subtree are all larger than it. Another scenario is when the target key is in a 3-node. In that case, deletion leaves a hole in the 3-node.
 
+### Base case
 
+We discussed two scenarios above, but both scenarios can be reduced to a single scenario, which is, in any case, deletion leaves a **hole** in that node.
+
+Handling the removal of a hole from a 3-node is easy; turn it into a 2-node.
+
+![image-20221110092937639](C:\Users\atriiy\AppData\Roaming\Typora\typora-user-images\image-20221110092937639.png)
+
+To handle the removal of a hole from a 2-node, we consider it a special hold node with a single subtree. Such a hold node does contribute to the height of the tree. Thus we preserve the path-length invariant in trees.
+
+![image-20221110093154877](C:\Users\atriiy\AppData\Roaming\Typora\typora-user-images\image-20221110093154877.png)
+
+### Upward phase
+
+The goal of this phase is to eliminate the hole node. We'll discuss each scenario in detail later, but the principle is pretty straightforward:
+
+1. Kick upstairs the hole
+2. Merge it into another node
+
+If a hole kicked up to the root, it should be removed, and the height of the tree will decrease by one. This is the only way that the height of a 2-3 node can decrease. Next, we will discuss each scenario.
+
+**Scenario 1**: The hold has a 2-node as a parent and a 2-node as a sibling.
+
+In this case, the hole will be kicked upstairs, and the parent node will be merged into the sibling node, becomes to a 3-node. The heights of the subtrees are the same.
+
+![](https://raw.githubusercontent.com/ShroXd/img-hosting/main/blog/20221110102714.png)
+
+**Scenario 2**: The hold has a 2-node as a parent and a 3-node as a sibling.
+
+In this case, the sibling node will be split into 2 2-nodes. We merge the hole into one of the 2-nodes. But to keep the rules of the 2-3 tree, We actually rotate the node instead of simply splitting the 3-node. You can check the diagram below to know what happened.
+
+![image-20221110193233886](C:\Users\atriiy\AppData\Roaming\Typora\typora-user-images\image-20221110193233886.png)
+
+**Scenario 3**: The hold has a 3-node as a parent and a 2-node as a sibling.
+
+It is almost as same as scenario 2. We'll merge the hole into the sibling node, but to keep the rule of the tree, we'll rotate the key instead of simply merging. To understand this, you can recall the left subtree is smaller than the left key of 3-node, and the middle subtree is between those 2 keys.
+
+![image-20221110201321561](C:\Users\atriiy\AppData\Roaming\Typora\typora-user-images\image-20221110201321561.png)
+
+**Scenario 4**: The hold has a 3-node as a parent and a 3-node as a sibling.
+
+The solution for this case is to merge the hold into another 2-node. Thus we'll rotate the key and generate a new 2-node to hold the subtrees of the hole.
+
+![](https://raw.githubusercontent.com/ShroXd/img-hosting/main/blog/20221110201209.png)
+
+# Red black tree
 
