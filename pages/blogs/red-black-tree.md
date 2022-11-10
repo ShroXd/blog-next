@@ -30,7 +30,7 @@ Before defining the 2-3 tree, we introduce two types of nodes in this kind of da
 
 Based on the assumptions above, we define a 2-3 tree as a tree comprised of 2-nodes & 3-nodes. It's perfectly balanced and in symmetric order by key. The first property means each path from the root to the leaves is all the same length, and the second property means an in-order traversal will yield keys in ascending order. The following is an example.
 
-![](https://raw.githubusercontent.com/ShroXd/img-hosting/main/blog/20221108212343.png)
+![](https://raw.githubusercontent.com/ShroXd/img-hosting/main/blog/20221110205438.png)
 
 We mentioned the tree is not only perfectly balanced but also in symmetric order by key. Thus as you can see, for every node, the keys in the left child nodes are both smaller than the current node's key, and those in the right are both larger than the current node's key. Of course, the child nodes' keys in the middle path of the 3-node are between those two keys.
 
@@ -76,11 +76,11 @@ We discussed two scenarios above, but both scenarios can be reduced to a single 
 
 Handling the removal of a hole from a 3-node is easy; turn it into a 2-node.
 
-![image-20221110092937639](C:\Users\atriiy\AppData\Roaming\Typora\typora-user-images\image-20221110092937639.png)
+![](https://raw.githubusercontent.com/ShroXd/img-hosting/main/blog/20221110205300.png)
 
 To handle the removal of a hole from a 2-node, we consider it a special hold node with a single subtree. Such a hold node does contribute to the height of the tree. Thus we preserve the path-length invariant in trees.
 
-![image-20221110093154877](C:\Users\atriiy\AppData\Roaming\Typora\typora-user-images\image-20221110093154877.png)
+![](https://raw.githubusercontent.com/ShroXd/img-hosting/main/blog/20221110205324.png)
 
 ### Upward phase
 
@@ -101,13 +101,13 @@ In this case, the hole will be kicked upstairs, and the parent node will be merg
 
 In this case, the sibling node will be split into 2 2-nodes. We merge the hole into one of the 2-nodes. But to keep the rules of the 2-3 tree, We actually rotate the node instead of simply splitting the 3-node. You can check the diagram below to know what happened.
 
-![image-20221110193233886](C:\Users\atriiy\AppData\Roaming\Typora\typora-user-images\image-20221110193233886.png)
+![](https://raw.githubusercontent.com/ShroXd/img-hosting/main/blog/20221110205200.png)
 
 **Scenario 3**: The hold has a 3-node as a parent and a 2-node as a sibling.
 
 It is almost as same as scenario 2. We'll merge the hole into the sibling node, but to keep the rule of the tree, we'll rotate the key instead of simply merging. To understand this, you can recall the left subtree is smaller than the left key of 3-node, and the middle subtree is between those 2 keys.
 
-![image-20221110201321561](C:\Users\atriiy\AppData\Roaming\Typora\typora-user-images\image-20221110201321561.png)
+![](https://raw.githubusercontent.com/ShroXd/img-hosting/main/blog/20221110205132.png)
 
 **Scenario 4**: The hold has a 3-node as a parent and a 3-node as a sibling.
 
