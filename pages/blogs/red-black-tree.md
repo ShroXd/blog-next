@@ -36,7 +36,7 @@ We mentioned the tree is not only perfectly balanced but also in symmetric order
 
 ## Searching
 
-Cause the 2-3 tree is in symmetric order by key, as same as the binary search tree. So we don't need to rewrite the algorithm for searching a lot; we just need to handle the 3-node carefully. This means when we meet the 3-nodes, we need to compare the target key with two keys in this node to see to which range the target key belongs. The result will decide the path of the current search process.
+Cause the 2-3 tree is in symmetric order by key, as same as the binary search tree. So we don't need to rewrite the algorithm for searching a lot; we need to handle the 3-node carefully. This means when we meet the 3-nodes, we need to compare the target key with two keys in this node to see to which range the target key belongs. The result will decide the path of the current search process.
 
 ![](https://raw.githubusercontent.com/ShroXd/img-hosting/main/blog/20221108221334.png)
 
@@ -89,7 +89,7 @@ The goal of this phase is to eliminate the hole node. We'll discuss each scenari
 1. Kick upstairs the hole
 2. Merge it into another node
 
-If a hole kicked up to the root, it should be removed, and the height of the tree will decrease by one. This is the only way that the height of a 2-3 node can decrease. Next, we will discuss each scenario.
+If a hole kicked up to the root, it should be removed, and the tree's height will decrease by one. This is the only way that the height of a 2-3 node can decrease. Next, we will discuss each scenario.
 
 **Scenario 1**: The hold has a 2-node as a parent and a 2-node as a sibling.
 
@@ -116,4 +116,69 @@ The solution for this case is to merge the hold into another 2-node. Thus we'll 
 ![](https://raw.githubusercontent.com/ShroXd/img-hosting/main/blog/20221110201209.png)
 
 # Red black tree
+
+We have already discussed the algorithm of 2-3 trees; the natural question to ask next is, "How to implement it?". The short answer is we can, but it's too much complexity. Thus, we usually don't implement the nature 2-3 tree.
+
+You may already notice in the 2-3 tree there are both 2-nodes, 3-nodes, and even temporary 4-nodes. It makes the insert/search methods different from the binary search tree. We do not only handle 3 types of nodes but also split the nodes during backing to the root node when inserting a new element. Sometimes it involves passing value to the parent nodes.
+
+The red-black tree is a good way to simplify 2-3 trees. The idea is not to treat the 3-nodes or 4-nodes as a new type of node; we organize the tree as a simple binary tree and add red color for some nodes which are 3-nodes before. Like the following picture.
+
+![](https://raw.githubusercontent.com/ShroXd/img-hosting/main/blog/20221118144000.png)
+
+It's pretty clear. We can manipulate it like a normal binary search tree.
+
+A detail worth mentioning is that for a 3-node, there is a child node at the middle position of it. When we turn it into a red-black tree, we can put it under the left or right node. If we take the picture above as an example, it says we can put the *H* under *M* or *J*. There will be no difference between different options, but we need to keep the same style in the entire red-black tree. In this article, we put it under the left node *M*, which we call the tree a right-leaning red-black tree.
+
+Another point is the red line between nodes is the only glue that binds two keys together into a 3-node. It won't add anything to the path length. That means when we draw any path from the root to a leaf; we only count the black links on the path. If the results are the same, we refer to this as a perfect black balance.
+
+By the way, because we introduced different kinds of lines to connected nodes, 
+
+## Red links
+
+After discussing the red-black trees' principle, it's vital to think about the implementation of the red links we mentioned above. The first thing coming to mind is to use a separate class like `Link`. But the problem is it means we need two instances of `Link` to represent *red* and *black* nodes, and it will increase the complexity of the code significantly. However, we can think of a link as belonging to a node. Thus we can introduce a field in the `Node` to store the information about the link's color.
+
+![](https://raw.githubusercontent.com/ShroXd/img-hosting/main/blog/20221120095142.png)
+
+To do this, we can implement an inner class `Node` used by the red-black tree and a helper method to cover the underlying details.
+
+```kotlin
+enum class Color {
+    RED, BLACK
+}
+
+class Node<K, V>(
+    var key: K,
+    var value: V,
+    var color: Color = Color.Black,
+    var size: Int = 0
+) {
+    var left: Node<K, V>? = null
+    var right: Node<K, V>? = null
+}
+
+private fun isRed(n: Node<K, V>?): Boolean =
+	if (n == null) false else n.color == Color.RED
+```
+
+One thing worth noting is that the root node's color must be **black** because the red links hint there is a parent node over the current node. But the root node doesn't have any parent nodes.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
