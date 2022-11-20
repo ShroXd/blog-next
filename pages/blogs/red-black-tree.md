@@ -127,9 +127,9 @@ The red-black tree is a good way to simplify 2-3 trees. The idea is not to treat
 
 It's pretty clear. We can manipulate it like a normal binary search tree.
 
-A detail worth mentioning is that for a 3-node, there is a child node at the middle position of it. When we turn it into a red-black tree, we can put it under the left or right node. If we take the picture above as an example, it says we can put the *H* under *M* or *J*. There will be no difference between different options, but we need to keep the same style in the entire red-black tree. In this article, we put it under the left node *M*, which we call the tree a right-leaning red-black tree.
+A detail worth mentioning is that for a 3-node, there is a child node at the middle position of it. When we turn it into a red-black tree, we can put it under the left or right node. If we take the picture above as an example, it says we can put the *H* under *M* or *J*. There will be no difference between different options, but we need to keep the same style in the entire red-black tree. In this article, we put it under the left node *M*, which we call the tree a **right-leaning** red-black tree.
 
-Another point is the red line between nodes is the only glue that binds two keys together into a 3-node. It won't add anything to the path length. That means when we draw any path from the root to a leaf; we only count the black links on the path. If the results are the same, we refer to this as a perfect black balance.
+Another point is the red line between nodes is the only glue that binds two keys together into a 3-node. It won't add anything to the path length. That means when we draw any path from the root to a leaf; we only count the black links on the path. If the results are the same, we refer to this as a **perfect black balance**.
 
 By the way, because we introduced different kinds of lines to connected nodes, 
 
@@ -156,11 +156,66 @@ class Node<K, V>(
     var right: Node<K, V>? = null
 }
 
-private fun isRed(n: Node<K, V>?): Boolean =
-	if (n == null) false else n.color == Color.RED
+private fun isRed(node: Node<K, V>?): Boolean =
+	if (node == null) false else node.color == Color.RED
 ```
 
 One thing worth noting is that the root node's color must be **black** because the red links hint there is a parent node over the current node. But the root node doesn't have any parent nodes.
+
+## Searching
+
+Although we introduced red links to implement 2-3 trees, in the *red links* section, we explained that it doesn't need to change much code. In other words, if we forget the red link things, the tree can be treated as a normal binary search tree. The only difference is that this tree is always in symmetric order and balanced.
+
+We can use the same algorithm to implement the search method for the red-black tree.
+
+```kotlin
+private fun search(key: K, node: Node<K, V>?): V? {
+    var cNode = node
+    
+    while (cNode != null) {
+        cNode = if (key < cNode.key) {
+            cNode.left
+        } else if (key > cNode.key) {
+            cNode.right
+        } else {
+            return cNode.value
+        }
+    }
+    
+    return null
+}
+fun search(key: K): V? = search(key, root)
+```
+
+## Insertion
+
+Same with 2-3 trees, we must keep red-black trees in symmetric order and perfectly balanced after inserting a new value. It should be noted that we're talking about trees' properties here is the **perfect black balance**. Except this, if the red-black tree was originally left-leaning, we also must keep it.
+
+We start the insertion process by navigating down the tree to the node where the key can be inserted. We can't always create a new node and put it where we would like it to go. Another limitation is that we can only append nodes with red color. This is because the black nodes will increase the height from the root node to this leaf node. However, this can cause problems itself.
+
+We'll discuss the simplest scenario that doesn't need to be fixed first and then turn to the four cases. At the end of this section, we will prove these four cases can be turned into the first scenario, or in other words, can be fixed.
+
+### Lonely right-leaning
+
+
+
+### Adjacent red edges
+
+
+
+### Left-left red edges
+
+
+
+### Left-right red edges
+
+
+
+### Putting everything together
+
+
+
+
 
 
 
