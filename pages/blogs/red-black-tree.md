@@ -197,25 +197,126 @@ We'll discuss the simplest scenario that doesn't need to be fixed first and then
 
 ### Lonely right-leaning
 
+Insert *Q* to the following left-leaning red-black tree. It'll be put at the right child of *P* (The node with a pin is the new node). This doesn't violate the tree's property of being perfectly balanced but creates a right-leaning node in a left-leaning tree. The solution for this scenario is **left rotation**. 
 
+| Problem created                                              | Solution                                                     |
+| ------------------------------------------------------------ | ------------------------------------------------------------ |
+| ![](https://raw.githubusercontent.com/ShroXd/img-hosting/main/blog/20221120132240.png) | ![](https://raw.githubusercontent.com/ShroXd/img-hosting/main/blog/20221120133740.png) |
+
+It feels like rotating things rigidly in a counter-clockwise direction. The following is the code:
+
+```kotlin
+private fun rotateLeft(node: Node<K, V>): Node<K, V> {
+    val temp = node.right!!
+    
+    node.right = temp.left
+    temp.left = node
+    
+    temp.color = node.color
+    node.color = Color.RED
+    
+    temp.size = node.size
+    node.size = size(node.left) + size(node.right) + 1
+    
+    return temp
+}
+```
 
 ### Adjacent red edges
 
+If a new node is put next to a red node, it causes an adjacent red edge issue. This is the 4-node in the 2-3 tree we mentioned before. In the 2-3 tree, we will split this 4-node into two 2-nodes. Same as here, we want to do the same thing.
 
+| Problem created                                              | Solution                                                     |
+| ------------------------------------------------------------ | ------------------------------------------------------------ |
+| ![](https://raw.githubusercontent.com/ShroXd/img-hosting/main/blog/20221120135253.png) | ![](https://raw.githubusercontent.com/ShroXd/img-hosting/main/blog/20221120135539.png) |
 
-### Left-left red edges
+The solution for this scenario is **flip colors**. It's pretty straightforward, and the following is the code:
 
+```kotlin
+private fun flipColor(node: Node<K, V>): Node<K, V> {
+    node.color = Color.RED
+    node.left?.color = Color.BLACK
+    node.right?.color = Color.BLACK
+    
+    return node
+}
+```
 
+### Left-left red edges and Left-right red edges
 
-### Left-right red edges
+In some cases, the new red node will be inserted under an old red node. It can be the left child node or the right child node, as the table shows below.
 
+| Left-left red edges                                          | Left-right red edges                                         |
+| ------------------------------------------------------------ | ------------------------------------------------------------ |
+| ![](https://raw.githubusercontent.com/ShroXd/img-hosting/main/blog/20221120141428.png) | ![](https://raw.githubusercontent.com/ShroXd/img-hosting/main/blog/20221120141450.png) |
 
+Our solution is to implement a method named `rotateRight`:
+
+```kotlin
+private fun rotateRight(node: Node<K, V>): Node<K, V> {
+    val temp = node.left!!
+    
+    node.left = temp.right
+    temp.right = node
+    
+    temp.color = node.color
+    node.color = Color.RED
+    
+    temp.size = node.size
+    node.size = size(node.left) + size(node.right) + 1
+    
+    return temp
+}
+```
+
+As you can see, we transform the left-left red edges issue to the adjacent red edges issue, which we have already addressed. In the same way, we will transform the left-right red edges to the left-left red edges issue, so we can re-use the existing code.
 
 ### Putting everything together
 
+We have finished the discussion of each scenario occurring in the insertion process. As the discussion shows, we can transform one scenario into another and fix it finally. The whole process is shown in the figure below.
 
+![](https://raw.githubusercontent.com/ShroXd/img-hosting/main/blog/20221120143614.png)
 
+As you will see in the following code, the final implementation of insertion is extremely simple, with only three if-statements.
 
+```kotlin
+private fun balance(node: Node<K, V>): Node<K, V> {
+    var cNode = node
+
+    if (isRed(cNode.right) && !isRed(cNode.left)) {
+        cNode = rotateLeft(cNode)
+    }
+    if (isRed(cNode.left) && isRed(cNode.left?.left)) {
+        cNode = rotateRight(cNode)
+    }
+    if (isRed(cNode.left) && isRed(cNode.right)) {
+        cNode = flipColor(cNode)
+    }
+    cNode.size = size(cNode.left) + size(cNode.right) + 1
+
+    return cNode
+}
+
+private fun put(key: K, value: V, node: Node<K, V>?): Node<K, V> {
+    if (node == null) {
+        return Node(key, value, Color.RED, 1)
+    }
+    
+    if (key > node.key) {
+        node.right = put(key, value, node.right)
+    } else if (key < node.key) {
+        node.left = put(key, value, node.left)
+    } else {
+        node.value = value
+    }
+    
+    return balance(node)
+}
+fun put(key: K, value: V) {
+    root = put(key, value, root)
+    root?.color = Color.BLACK
+}
+```
 
 
 
