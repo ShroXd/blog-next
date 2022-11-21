@@ -3,7 +3,7 @@ title: 'Algorithm Connect! Re: Dive - Red Black Tree'
 date: '2022-11-8'
 lastmod: '2022-11-8'
 tags: ['algorithm', 'search']
-draft: true
+draft: false
 summary: ''
 authors: ['default']
 ---
@@ -277,7 +277,7 @@ We have finished the discussion of each scenario occurring in the insertion proc
 
 ![](https://raw.githubusercontent.com/ShroXd/img-hosting/main/blog/20221120143614.png)
 
-As you will see in the following code, the final implementation of insertion is extremely simple, with only three if-statements.
+We don't need to go through the whole process for each node. Instead, we need to determine which state the current node is in and call these methods in turn. Another aspect of this algorithm is the root node. Recalling that the red edge means the node should be considered "glued to" its parent node. It's obvious that the root node doesn't have any parent node. In that case, we can make the root node to be black cause it never breaks the perfectly black balanced. As you will see in the following code, the final implementation of insertion is extremely simple, with only three if-statements.
 
 ```kotlin
 private fun balance(node: Node<K, V>): Node<K, V> {
@@ -318,23 +318,73 @@ fun put(key: K, value: V) {
 }
 ```
 
+## Deletion
 
+The deletion algorithm of a red-black tree is pretty complex, but the main principle is that compared with deleting a node, it's easier to delete the min node in the right child sub-tree.
 
+```kotlin
+private fun deleteMin(node: Node<K, V>): Node<K, V>? {
+    var cNode = node
 
+    if (cNode.left == null) {
+        return null
+    }
 
+    if (!isRed(cNode.left) && !isRed(cNode.left?.left)) {
+        cNode = moveRedLeft(cNode)
+    }
 
+    cNode.left = deleteMin(cNode.left!!)
 
+    return balance(cNode)
+}
 
+private fun delete(key: K, node: Node<K, V>): Node<K, V>? {
+    var cNode = node
 
+    if (key < node.key) {
+        if (!isRed(cNode.left) && !isRed(cNode.left?.left)) {
+            cNode = moveRedLeft(cNode)
+        }
+        cNode.left = delete(key, cNode.left!!)
+    } else {
+        if (isRed(cNode.left)) {
+            cNode = rotateRight(cNode)
+        }
+        // bottom
+        if (key == cNode.key && cNode.right == null) {
+            return null
+        }
+        if (!isRed(cNode.right) && !isRed(cNode.right?.left)) {
+            cNode = moveRedRight(cNode)
+        }
 
+        // middle
+        if (key == node.key) {
+            val minNode = min(cNode.right!!)
+            cNode.key = minNode.key
+            cNode.value = minNode.value
+            cNode.right = deleteMin(cNode.right!!)
+        } else {
+            cNode.right = delete(key, cNode.right!!)
+        }
+    }
 
+    return balance(cNode)
+}
+fun delete(key: K) {
+    if (!contains(key)) {
+        return
+    }
 
+    if (!isRed(root?.left) && !isRed(root?.right)) {
+        root?.color = Color.RED
+    }
 
+    root = delete(key, root!!)
+    if (!isEmpty()) {
+        root?.color = Color.BLACK
+    }
+}
 
-
-
-
-
-
-
-
+```
