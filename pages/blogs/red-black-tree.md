@@ -2,7 +2,7 @@
 title: 'Algorithm Connect! Re: Dive - Red Black Tree'
 date: '2022-11-8'
 lastmod: '2022-11-8'
-tags: ['algorithm', 'search']
+tags: ['algorithm', 'tree']
 draft: false
 summary: ''
 authors: ['default']
