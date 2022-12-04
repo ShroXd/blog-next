@@ -90,6 +90,150 @@ After the sequential search algorithm, the value of `idx` will be `3`. This is v
 
 To summarize, considering the search algorithm of the b tree is to think of the index of each key as the _left_ child node when we use it to access the child node list.
 
+## Insertion
+
+B tree is a self-balanced tree, or in other words, all leaves have the same depth. This is an essential property of the b tree, which gives the b tree the ability to search any element in $O(log n)$. We should not break this during the insertion procedure. Therefore, insertion operations always happen at the leaf node.
+
+The insertion is a top-down procedure. It starts from the root node and compares the key which is going to be inserted with keys in the list to determine the direction of the next recursive calling. Before jumping into the next child node, check the keys list's size. If it's bigger than the upper bound, splitting the node. Once the algorithm reaches the bottom of the tree, insert the key into the keys list of the leaf node.
+
+You may notice that we would split _each_ overloaded node during the downward recursion. We don't only split the leaf node because the splitting procedure may overload the inner node. We should not only handle the leaf nodes, but also the inner nodes.
+
+### Start from root node
+
+According to the discussion above, all we need to do is find an appropriate path down to a leaf node. But in fact, we missed a special scenario, inserting an element into an empty tree. The solution is pretty straightforward: Create a new root node. A good habit is to create a new node and assign values to the fields first and then point the `root` pointer to it. The following is the code.
+
+```kotlin
+fun insert(key: K) {
+    // Create a new root when it's not exist
+    if (root == null) {
+        val temp = Node<K>(true)
+        temp.keys.add(key)
+        
+        root = temp
+    // Find the path down to a leaf node
+    } else {
+        val currentRoot = root!!
+        
+        // Check if the root node is full
+        // All nodes can contain at most 2*t-1 keys
+        if (currentRoot.keys.size == 2 * t - 1) {
+            val newRoot = Node<K>(false)
+            newRoot.children.add(currentRoot)
+            
+            // Split the root node
+            splitChild(0, newRoot)
+            
+            // After splitting the root node, keys in right child node may smaller than the key
+            val idx = 0
+            if (newRoot.keys[0] < key) {
+                idx += 1
+            }
+            
+            // Insert the key in sub-tree
+            insertNonFull(key, newRoot.children[idx])
+            root = newRoot
+        // If root node is not full, put the new key here
+        } else {
+            // Inert the key in root node
+            insertNonFull(key, currentRoot)
+        }
+    }
+}
+```
+
+### Split node
+
+We should split the node when it's full. To be more precise, we should split the nodes whose number of keys equals `2 * t - 1`. It's easy to know for any natural number `t`, the result of `2 * t - 1` is odd. In other words, the number of keys is odd, and the number of child nodes is even.
+
+Therefore, the splitting procedure is to push the middle key into the parent node and split the remaining keys. If that node is not a leaf node, split the child nodes.
+
+```kotlin
+private fun splitChild(idx: Int, node: Node<K>) {
+    // The index of current child ndoe is `idx`, thus all keys is smaller than the parent node's
+    val currentChild = node.children[idx]
+    // The new child is in same level as current child node
+    val newChild = Node<K>(currentChild.isLeaf)
+    
+    // Put the right part of keys into new child node
+    newChild.keys = currentChild.keys.slice(t until currentChild.keys.size).toMutableList()
+    // Handle the child nodes list if current child node is not a leaf node
+    if (!currentChild.isLeaf) {
+        newChild.children = currentChild.children.slice(t until currentChild.keys.size).toMutableList()
+    }
+    
+    // Cause the index of list starts from 0, thus index of the middle key is t-1
+    node.keys.add(idx, currentChild.keys[t - 1])
+    // The structure of the node is
+    // node
+    // currentChild / newChild
+    node.children.add(idx + 1, newChild)
+    
+    // Only the left part of keys remain
+    currentChild.keys = currentChild.keys.slice(0 until t - 1).toMutableList()
+    // Same logic for the child ndoes
+    if (!currentChild.isLeaf) {
+        currentChild.children = currentChild.children.slice(0 until t).toMutableList()
+    }
+}
+```
+
+### Insert into non-full node
+
+This is the major part of the insertion procedure. It has two tasks, the first is to find the appropriate path down to a leaf node and insert the key into it, and the second is to split the full inner node in the path.
+
+```kotlin
+private fun insertNonFull(key: K, node: Node<K>) {
+    // Do the sequential searching from the end of keys list
+    var idx = node.keys.size - 1
+    
+    // Insert the key into the appropriate leaf node
+    if (node.isLeaf) {
+        while (idx >= 0 && node.keys[idx] > key) {
+            idx -= 1
+        }
+        node.keys.add(idx + 1, key)
+    } else {
+        while (idx >= 0 && node.keys[idx] > key) {
+            idx -= 1
+        }
+        
+        // Check the child node which we're going to access
+        // Split it if it's full
+        if (node.children[idx + 1].keys.size == 2 * t - 1) {
+            splitChild(idx + 1, node)
+            // If the key from child node is smaller than the key to be inserted
+            // We need to fix the idx
+            if (node.keys[idx + 1] < key) {
+                idx += 1
+            }
+        }
+        
+        // Continue the process on the path
+        insertNonFull(key, node.children[idx + 1])
+    }
+}
+```
+
+## Deletion
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
