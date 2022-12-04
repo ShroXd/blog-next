@@ -84,7 +84,7 @@ Consider the following scenario.
 
 The `key` we are searching for is bigger than the 3rd key in the list but smaller than the 4th key. If we set the value of `idx` as `node.keys.size` and run the sequential search algorithm, the `while` statement will quit at the following moment.
 
-![image-20221204103513063](C:\Users\atriiy\AppData\Roaming\Typora\typora-user-images\image-20221204103513063.png)
+![](https://raw.githubusercontent.com/ShroXd/img-hosting/main/blog/20221204164734.png)
 
 After the sequential search algorithm, the value of `idx` will be `3`. This is very important because if we access the child node via `ndoe.children[idx]`, it will be the _left_ child node of this key. In other words, every key in that child node will be smaller than the 3rd key in this node. In the same way, if we want to make the sequential search algorithm starts from the head of `node.keys`, we also need to pay attention to the value of `idx` when the `while` statement finishes. The situation of the binary search algorithm can be a bit more complex, but the mechanism is the same.
 
