@@ -216,27 +216,211 @@ private fun insertNonFull(key: K, node: Node<K>) {
 
 ## Deletion
 
+Different from insertion, deletion can happen in any node of the b tree. We must make sure this procedure doesn't violate the properties of the b tree. In other words, we should guarantee any node except the root has more than the minimum number $t - 1$ of keys. As for the root node, the minimum number of keys is $1$.
 
+The deletion algorithm we're going to introduce guarantees that whenever it calls itself recursively on a node, the number of keys in this node is at least the minimum number $t$. This number is one more than the property we mentioned before. This condition allows us to delete a key from the tree in one downward access without _backup_. As we mentioned, the tree only shrinks from the root node.
 
+### Entry function
 
+The deletion is a recursive procedure, which means we need an entry function to call the recursive function. The recursive function will remove the key, and the entry function aims to handle some edge scenarios. Except for calling the recursive function, in this deletion algorithm, the entry function shrinks the tree from the root if the root node holds no keys.
 
+```kotlin
+fun delete(key: K) {
+    if (root == null) {
+        throw Error("Nothing in the b tree.")
+    }
+    
+    // Call the recursive function
+    delete(key, root!!)
+    
+    // Handle the scenario when root node has nothing
+    if (root!!.keys.size == 0) {
+        root = if (root!!.isLeaf) {
+            null
+        } else {
+            // Shrink the tree if root node is not a leaf
+            root!!.children[0]
+        }
+    }
+}
+```
 
+### Recursive deletion
 
+Just like the insertion, to delete a key, we need to find out the node which holds that key first. During the downward process, if any node in the path doesn't have enough keys, we will _fill_ it first and then jump into that node.
 
+```kotlin
+private fun delete(key: K, node: Node<K>) {
+    
+    // Sequential search, better solution is to use binary search
+    var idx = 0
+    while (idx < node.keys.size && key > node.keys[idx]) {
+        idx += 1
+    }
+    
+    // If we find the key in this node
+    if (idx < node.keys.size && node.keys[idx] == key) {
+        // We can delete a key from a leaf node directly in removeFromLeaf function
+        // We convert the problem deleting key from inner node to first situation
+        if (node.isLeaf) {
+            deleteFromLeaf(idx, node)
+        } else {
+            deleteFromNonLeaf(idx, node)
+        }
+    // If we don't find the key, keep searching until reach leaf node
+    } else {
+        // The node does not exist in this tree
+        if (node.isLeaf) {
+            throw Error("The key $key does not exist in the tree\n")
+        }
+        
+        val isLast = idx == node.keys.size
+        // This allows us delete a key in single downward process
+        if (node.children[idx].keys.size < t) {
+            fill(idx, node)
+        }
+        
+        // The last child node will be merged with prev one
+        // We need to move the index one step forward in this situation
+        if (isLast && idx > node.keys.size) {
+            delete(key, node.children[idx - 1])
+        } else {
+            delete(key, node.children[idx])
+        }
+    }
+}
+```
 
+### Fill the node
 
+If the current node we're handling during the deletion process doesn't have enough keys, we will call `fill` function to make it fit the b tree's property. The logic of this function is also pretty straightforward. We will try to borrow a key from an adjacent sibling node first. If both two adjacent sibling nodes don't have redundant keys, we will merge the node with one sibling node.
 
+```kotlin
+private fun fill(idx: Int, node: Node<K>) {
+    // If the child node is not the first one, borrow key from next sibling child node which has redundant keys
+    if (idx != 0 && node.children[idx - 1].keys.size >= t) {
+        borrowFromPrev(idx, node)
+    // Borrow from prev sibling child node
+    } else if (idx != node.keys.size && node.children[idx + 1].keys.size >= t) {
+        borrowFromNext(idx, node)
+    // Merge two child node
+    } else {
+        // Defautly, merge the child with next sibling node
+        // Otherwise, merge it with prev sibling node
+        if (idx == node.keys.size) {
+            merge(idx - 1, node)
+        } else {
+            merge(idx, node)
+        }
+    }
+}
+```
 
+### Borrow key from sibling node
 
+The `borrowFromPrev` and `borrowFromNext` mirror each other, so we only introduce one. Take the second one as an example. We have mentioned the keys stored in b trees kept in ascending order. It means not only the keys in the list are in ascending order but also those in any child node. Go further, for any keys $A$ and $B$, the keys in the child node between them are in the range $(A, B)$. Therefore, we can't just pick up a key from a sibling node and put it into current node. We need to *pass* the key with the help of the parent node.
 
+```kotlin
+private fun borrowFromNext(idx: Int, node: Node<K>) {
+    val child = node.children[idx]
+    val sibling = node.children[idx + 1]
+    
+    // Pass the key from parent node
+    child.keys.add(node.keys[idx])
+    // Handle the child list if current node is not a leaft node
+    if (!child.isLeaf) {
+        child.children.add(sibling.children.first())
+        sibling.children.removeFirst()
+    }
+    
+    // Pass one key from sibling to parent node
+    node.keys[idx] = sibling.keys.first()
+    sibling.keys.removeFirst()
+}
+```
 
+### Merge two child node
 
+In the `fill` function, we try to borrow a key from sibling node first. If both two sibling nodes don't have redundant keys, we merge these two nodes. Recalling the property that the number of child nodes is one more than the number of keys. Thus for the merged node, we need to add one more key to keep the property. And this key is from the parent node. The reason why we can do it is that after merging, the parent node lost one child node. So we can move one redundant key from parent to the merged node.
 
+```kotlin
+private fun merge(idx: Int, node: Node<K>) {
+    val child = node.children[idx]
+    val sibling = node.children[idx + 1]
+    
+    // Move one key from parent node to merged node
+    child.keys.add(node.keys[idx])
+    
+    // Merge two nodes
+    child.keys.addAll(sibling.keys)
+    child.children.addAll(sibling.children)
+    
+    // Remove the sibling node which has been merged
+    node.keys.removeAt(idx)
+    node.children.removeAt(idx + 1)
+}
+```
 
+### Remove key from leaf node
 
+Once we find the key, we will remove it. But we need to handle two situations here, which are removing it from a leaf node or inner node. The logic is pretty straightforward for removing key from a leaf node. Cause we have checked and filled any scraggy node before jump into it, so the node must have enough keys. Therefore, we can delete it safely.
 
+```kotlin
+private fun removeFromLeaf(idx: Int, node: Node<K>) =
+    node.keys.removeAt(idx)
+```
 
+### Remove key from inner node
 
+The logic for removing key from inner node is a little complex. We can't simply remove a key from inner node because we need to keep it to be self-balanced after deletion. Thus we will use the same strategy with binary search tree. We replace the key to be removed with its predecessor or successor, and then recursively delete the predecessor or successor.
 
+Before jumping into the algorithm, we should introduce the concepts first.
 
+- predecessor: the largest key on the left child of a node is called its inorder predecessor.
+- successor: the smallest key on the right child of a node is called its inorder successor.
 
+According to the concept, we can implement the function.
+
+```kotlin
+private fun getPredecessor(idx: Int, node: Node<K>): K {
+    var curr = node.children[idx]
+    while (!curr.isLeaf) {
+        curr = curr.children.last()
+    }
+    
+    return curr.keys.last()
+}
+```
+
+The point is the predecessor of one key is larger than any keys in the left subtree of that key. Thus if we replace the key with its predecessor, we will not break the property of a b tree. If both two child nodes don't have enough keys, we can merge them before continuing.
+
+```kotlin
+private fun removeFromNonLeaf(idx: Int, node: Node<K>) {
+    val key = node.keys[idx]
+    
+    // We don't mind the key will be replace by predecessor or successor
+    // But we need to check if the child node has enough key before searching it
+    if (node.children[idx].keys.size >= t) {
+        val predecessor = getPredecessor(idx, node)
+        node.keys[idx] = predecessor
+        
+        remove(predecessor, node.children[idx])
+    } else if (node.children[idx + 1].keys.size >= t) {
+        val successor = getSuccessor(idx, node)
+        node.keys[idx] = successor
+        
+        remove(successor, node.children[idx + 1])
+    } else {
+        // After merging, the key at position of idx in current node will be push down to the merged child node
+        // Therefore we recursively call the remove function for the key on child node
+        merge(idx, node)
+        remove(key, node.children[idx])
+    }
+}
+```
+
+# Reference
+
+1. [Tutorial of b-tree on programiz](https://www.programiz.com/dsa/b-tree)
+2. [Introduction of b-tree on geeksforgeeks](https://www..org/introduction-of-b-tree-2/)
+3. [B-tree visualization](https://www.cs.usfca.edu/~galles/visualization/BTree.html)
