@@ -58,7 +58,6 @@ The search algorithm doesn't have significant differences from other self-balanc
 ```kotlin
 private fun search(key: K, node: Node<K>): Node<K>? {
     var idx = node.keys.size - 1
-    
     while (idx >= 0 && node.keys[idx] > key) {
         idx -= 1
     }
@@ -75,13 +74,21 @@ private fun search(key: K, node: Node<K>): Node<K>? {
 }
 ```
 
-TODO: explain the while statement.
+It's worth mentioning that the `while` statement is going to implement a sequential search algorithm for a sorted list. Suppose the $n$ is the number of keys in the current node; the time complexity of this algorithm is $O(n)$. A good solution for this requirement is to use the _binary search algorithm_; this reduces the time complexity to $log{n}$. But in order to focus on the b tree in this blog, we will skip this improvement.
 
+Another point that needs to be mentioned is the `idx`. Suppose we're using the sequential search algorithm in this method, as the code shown above. Because our sequential search algorithm starts from the end of the keys list, and the condition in the `while` statement is `node.keys[idx] > key`. Therefore, when the `while` statement ends, the key at the `idx` position will be **equal to** or **smaller than** the key we're searching for.
 
+Consider the following scenario.
 
+![](https://raw.githubusercontent.com/ShroXd/img-hosting/main/blog/20221204103016.png)
 
+The `key` we are searching for is bigger than the 3rd key in the list but smaller than the 4th key. If we set the value of `idx` as `node.keys.size` and run the sequential search algorithm, the `while` statement will quit at the following moment.
 
+![image-20221204103513063](C:\Users\atriiy\AppData\Roaming\Typora\typora-user-images\image-20221204103513063.png)
 
+After the sequential search algorithm, the value of `idx` will be `3`. This is very important because if we access the child node via `ndoe.children[idx]`, it will be the _left_ child node of this key. In other words, every key in that child node will be smaller than the 3rd key in this node. In the same way, if we want to make the sequential search algorithm starts from the head of `node.keys`, we also need to pay attention to the value of `idx` when the `while` statement finishes. The situation of the binary search algorithm can be a bit more complex, but the mechanism is the same.
+
+To summarize, considering the search algorithm of the b tree is to think of the index of each key as the _left_ child node when we use it to access the child node list.
 
 
 
