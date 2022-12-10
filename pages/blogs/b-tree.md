@@ -4,7 +4,7 @@ date: '2022-12-3'
 lastmod: '2022-12-3'
 tags: ['algorithm', 'tree']
 draft: false
-summary: ''
+summary: 'A Red-Black Tree is a tree that's always trying to keep its cool, but never quite succeeds (since it's constantly balancing itself).'
 authors: ['default']
 ---
 
