@@ -106,11 +106,56 @@ class AdjMatrixUndirectedGraph(override var vertices: Int = 0): Graph {
 }
 ```
 
+### Adjacency List
 
+Another way is to use the adjacency list. The size of the list is equal to the number of vertices. Each element stores a set of vertices linked to the first vertex in this series of vertices. But whatever you use, the adjacency list is efficient, and we can even use it to represent a weighted graph. The only thing needed is to store the weight of the current edge in the node.
 
+![](https://raw.githubusercontent.com/ShroXd/img-hosting/main/blog/20221210213038.png)
 
+Recalling the difference between the array and the linked list. We know the linked list is an efficient data structure to store a series of data because if we want to insert a new element, we can change the previous node and the new node's pointer `next`. If we use an array, we need to move each node behind the new node one step backward. In this scenario, we can only add a new vertex from the array's end. Therefore we can use an array to store them. But the performance of deletion is still not improved. The following is the code.
 
+```kotlin
+class AdjListUndirectedGraph(override var vertices: Int = 0): Graph {
+    override var edges: Int = 0
+    // Adjacency list storing every vertices linked to current one
+    val adjacencyList: MutableList<MutableList<Int>> = MutableList(vertices) { mutableListOf() }
+    
+    // Optional helper method, check if given index is in the cope of arrays
+    private fun validataVertex(vararg vertices: Int) {
+        vertices.forEach {
+            if (it < 0 || it >= this.vertices) {
+                throw IllegalArgumentException("vertex $it is not between 0 and ${it - 1}")
+            }
+        }
+    }
+    
+    override fun addVertex() {
+        vertices += 1
+        adjacencyList.add(mutableListOf())
+    }
+    
+    override fun addEdge(a: Int, b: Int) {
+        validateVertex(a, b)
+        if (!adjacencyList[a].contains[b]) {
+            edges += 1
+        }
+        
+        adjacencyList[a].add(b)
+        adjacencyList[b].add(a)
+    }
+    
+    override fun removeEdge(a: Int, b: Int) {
+        validateVertex(a, b)
+        if (adjjacencyList[a].contains(b)) {
+            edges -= 1
+        }
+        
+        adjacencyList[a].remove(b)
+    }
+}
+```
 
+## Search
 
 
 
