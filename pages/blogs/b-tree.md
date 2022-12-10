@@ -4,7 +4,7 @@ date: '2022-12-3'
 lastmod: '2022-12-3'
 tags: ['algorithm', 'tree']
 draft: false
-summary: 'A Red-Black Tree is a tree that's always trying to keep its cool, but never quite succeeds (since it's constantly balancing itself).'
+summary: 'A B-tree is a self-balancing tree data structure that maintains sorted data and allows searches, insertions, and deletions in logarithmic time.'
 authors: ['default']
 ---
 
