@@ -157,7 +157,68 @@ class AdjListUndirectedGraph(override var vertices: Int = 0): Graph {
 
 ## Search
 
+Searching on a graph is an essential function we need to study. As we mentioned, the graph could be considered _tree pro max_, which means if one vertex has multiple neighbors, we need to decide to search child vertices or neighbor first. In other words, it's two different searching strategies: depth-first search & breadth-first search. We will discuss them.
 
+### Depth-first search
+
+In computer science, a depth-first search (DFS) is an algorithm for traversing or searching on a graph. As we mentioned before, DFS will search in a depthward motion. We can use a `stack` to help the procedure, but a wide solution is to use a recursive function. A recursive procedure is a natural depth-first procedure.
+
+It's crucial to understand that the graph may have _cyclic_ vertices. It means an edge connects a vertex with itself. We need to consider this scenario; otherwise, our search algorithm may get stuck in an infinite loop. A simple solution is to record the vertices we have already visited. 
+
+```kotlin
+fun depthFirstSearch(graph: AdjListUndirectedGraph, vertex: Int, fn: (v: Int) -> Unit) {
+    // We use mutable list to record visited vertices
+    // You can also use mutable map, mutable set, or whatever you prefer
+    val visited = MutableList(graph.vertices) { false }
+    
+    // Recursive function
+    fun dfs(v: Int) {
+        visited[v] = true
+        // Do something on the current vertex
+        fn(v)
+        
+        // Check each neighbors connected to current vertex
+        for (idx in graph.adjacencyList[v]) {
+            // Jump into a neighbor which have not visited
+            if (!visited[idx]) dfs(idx)
+        }
+    }
+    
+    // Tail recursion
+    return dfs(vertex)
+}
+```
+
+### Breadth-first search
+
+The breadth-first search (BFS) is also an algorithm for traversing or searching on a graph. Unlike DFS, breadth-first search explore each level of the graph first and then go depthward. We always use a `queue` to help with the traversing procedure. For the same reason, we also need to record the visited vertices to prevent an infinite loop.
+
+```kotlin
+fun breadthFirstSearch(graph: AdjListUndirectedGraph, vertex: Int, fn: (v: Int) -> Unit) {
+    val visited = MutableList(graph.vertices) { false }
+    // Use a queue to schedule the traversing procedure
+    val queue = LinkedList<Int>()
+    
+    visited[vertex] = true
+    queue.add(vertex)
+    fn(v)
+    
+    while (queue.isNotEmpty()) {
+        val curr = queue.poll()
+        
+        // Visited each neighbor first
+        for (adj in graph.adjacencyList[curr]) {
+            if (!visited[adj]) {
+                visited[adj] = true
+                fn(v)
+                // Put the neighbors of neighbors in the queue
+                // Waiting for the next loop
+                queue.add(adj)
+            }
+        }
+    }
+}
+```
 
 
 
