@@ -220,9 +220,111 @@ fun breadthFirstSearch(graph: AdjListUndirectedGraph, vertex: Int, fn: (v: Int) 
 }
 ```
 
+# Directed graph
 
+Like the undirected graph, the directed graph is one kind of graph that can store relationship information. The difference is the edges of the directed graph have a direction. This means that the edges in a directed graph are ordered pairs of vertices.
 
+## Representation
 
+We can also use an adjacency matrix or adjacency list to represent a directed graph, and the implementations are similar to the undirected graph. Therefore we will only introduce how to represent a directed graph using an adjacency list.
 
+We mentioned it's useful to store the distance information in edges since this information can help us to find the shortest way. Thus we will implement two classes which are `Vertex<T>` and `AdjListDirectedGraph<T>`.
 
+```kotlin
+class Vertex<T>(val data: T) {
+    // Store all neighbors of the vertex
+    // Each vertex is a hash table, key is neighbor and the value is the distance information soted on edges
+    private val neighbors = mutableMapOf<Vertex<T>, Int>()
+    
+    // Store the weight information
+    // Or we can call it distance information
+    fun addNeighbor(vertex: Vertex<T>, weight: Int) {
+        neighbors[vertex] = weight
+    }
+    
+    fun removeNeighbor(vertex: Vertex<T>) {
+        neighbors.remove(vertex)
+    }
+    
+    fun getNeighbor(): Map<Vertex<T>, Int> {
+        return neighbors
+    }
+}
+```
 
+To use the `Vertex<T>` class, we need to implement `AdjListDirectedGraph<T>`.
+
+```kotlin
+class AdjListDirectedGraph<T>(val vertices: MutableList<Vertex<T>>) {
+    // Add new vertex in the vertices list
+    fun addVertex(vertex: Vertex<T>) {
+        vertices.add(vertex)
+    }
+    
+    // We can also add only one directed edge
+    fun addEdge(v1: Vertex<T>, v2: Vertex<T>, weight: Int) {
+        v1.addNeighbor(v2, weight)
+        v2.addNeighbor(v1, weight)
+    }
+    
+    fun removeEdge(v1: Vertex<T>, v2: Vertex<T>) {
+        v1.removeNeighbor(v2)
+        v2.removeNeighbor(v1)
+    }
+}
+```
+
+## Search
+
+We also have two different strategies for the directed graph: depth-first search and breadth-first search. They are pretty similar to those of undirected graphs. The only thing we need to pay attention to is following the direction of edges during traversing. Additionally, we use a new way to implement the graph, so the code of searching algorithms will have a bit of difference. But the core logic doesn't change.
+
+```kotlin
+fun <T> depthFirstSearch(vertex: Vertex<T>, fn: (v: Vertex<T>) -> Unit) {
+    val visited: MutableSet<Vertex<T>> = mutableSetOf()
+    
+    fun dfs(v: Vertex<T>) {
+        // Prevent the infinite recursive loop
+        if (v in visited) return
+        
+        visited.add(v)
+        fn(v)
+        
+        // Visit the child vertices first
+        v.getNeighbor().forEach { dfs(it.key) }
+    }
+    
+    return dfs(vertex)
+}
+```
+
+And the following is the bread-first search algorithm.
+
+```kotlin
+fun <T> breadthFirstSearch(vertex: Vertex<T>, fn: (v: Vertex<T>) -> Unit) {
+    val visited: MutableSet<Vertex<T>> = mutableSetOf()
+    val queue = LinkedList<Vertex<T>>()
+    
+    visited.add(vertex)
+    queue.add(vertex)
+    
+    while (queue.isNotEmpty()) {
+        val curr = queue.remove()
+        fn(curr)
+        
+        for (neighbor in curr.getNeighbor()) {
+            if (!visited.contains(neighbor.key)) {
+                // Visite neighbors on the same level first
+                visited.add(neighbor.key)
+                // Store next level in the queue
+                queue.add(neighbor.key)
+            }
+        }
+    }
+}
+```
+
+# Reference
+
+1. [Graph Data Structure And Algorithms](https://www.geeksforgeeks.org/graph-data-structure-and-algorithms/)
+2. [Graph Data Structure](https://www.programiz.com/dsa/graph)
+3. [chatGPT, the super powerful AI](https://chat.openai.com/chat)
