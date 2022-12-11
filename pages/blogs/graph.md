@@ -1,9 +1,9 @@
 ---
 title: 'Algorithm Connect! Re: Dive - Graph'
 date: '2022-12-10'
-lastmod: '2022-12-10'
+lastmod: '2022-12-11'
 tags: ['algorithm', 'tree']
-draft: true
+draft: false
 summary: 'A Graph data structure consists of a set of vertices (or nodes) and a set of edges that connect these vertices.'
 authors: ['default']
 ---
@@ -14,7 +14,7 @@ authors: ['default']
 
 The graph is a widely used data structure. It aims to describe the complex relationship between multiple objects. For example, we can use the graph to describe the relationship of my social media account. I followed person A, and we can imagine a line from my end to his/her end. If A followed another B, that means I can get to know person B, as long as person A is willing to introduce each other to us. Suppose there I have a friend C, who also knows person B. Based on this relationship, I have another _path_ to make friends with person B. Actually, my friend C also can be the friend of person A. If you draw all these relationships on paper, it looks like a __net__. Of course, we can use one data structure to describe it: the __graph__.
 
-Consider the graph from the data structure aspect; it looks like a _tree pro max_. If you recall the trees we discussed earlier, you will find we can only start from the root node and end at a leaf node when we traverse a tree. Although we have multiple paths, both have only one starting point: the root node. And the situation even can be easier on a _linked list_. The linked list has only one starting and ending point. In other words, if we want to traverse a linked list, we will choose only one path.
+Consider the graph from the data structure aspect; it looks like a _tree pro max_. If you recall the trees we discussed earlier, you will find we can only start from the root node and end at a leaf node when we traverse a tree. Although we have multiple paths, both have only one starting point: the root node. And the situation even can be easier on a _linked list_. The linked list has only one starting and ending point. In other words, we will choose only one path if we want to traverse a linked list.
 
 ![](https://raw.githubusercontent.com/ShroXd/img-hosting/main/blog/20221210111014.png)
 
@@ -327,4 +327,4 @@ fun <T> breadthFirstSearch(vertex: Vertex<T>, fn: (v: Vertex<T>) -> Unit) {
 
 1. [Graph Data Structure And Algorithms](https://www.geeksforgeeks.org/graph-data-structure-and-algorithms/)
 2. [Graph Data Structure](https://www.programiz.com/dsa/graph)
-3. [chatGPT, the super powerful AI](https://chat.openai.com/chat)
+3. [chatGPT, the super-powerful AI](https://chat.openai.com/chat)
