@@ -194,11 +194,62 @@ fun <T> primMST(graph: GraphWeighted<T>): MutableList<Edge<T>> {
 
 # Kruskal's algorithm
 
-// TODO: overview
+Compared with Prim's algorithm, this one focus on the edges of the whole graph instead of a specific vertex. The idea is to pick an edge orderly at a time and put it into the minimum spanning tree's edge set. If the final result is a minimum spanning tree, the edge picked in this process will be the minimum one at that moment. But the issue with this logic is that the edges picked orderly may generate a cycle. The solution is only to pick the edges, which are **cuts**. Here is [the best video](https://www.youtube.com/watch?v=u6FkNw16VJA&t=6s&ab_channel=patrickJMT) explaining the cut theory for anyone unfamiliar with this term. 
 
-// disjoint set
+Summarizing the discussion, the idea behind this algorithm is to select edges orderly from the set of cuts. Or in other words, choose edges and check if it's a cut edge before adding it to the result. To satisfy this requirement, we need to implement a data structure called disjoint set first. And then, we will use this data structure to implement Kruskal's algorithm.
 
-// code
+## Disjoint set
+
+The disjoint set is a data structure distinguishing the collections to which different elements belong. You can imagine the _Set_ in mathematics.
+
+![](https://raw.githubusercontent.com/ShroXd/img-hosting/main/blog/20221218124812.png)
+
+As shown in the illustration, this data structure can maintain multiple sets and check if an element belongs to any set or add a new element to any set. We use a hash map to implement this data structure cause we want to support any type. You can use any other way to finish this work, like using an array if you only want to support number type.
+
+Our solution considers the set as an N-fork tree and uses a hash map to store the relationships between elements. To add a new element, we can link it to any leaf element of that tree. To check if an element belongs to any set $T$, we can traverse the hash map to find the parent node. Two elements only belong to the same set if their root node is the same. We can use the following type to describe the hash map.
+
+```
+<T : type of current element, T : type of parent element>
+```
+
+The following is the code. It's worth highlighting that we only implemented the basic function of this data structure. If you want to implement a more general data structure, you need to add more methods for it by yourself.
+
+```kotlin
+class DisjointSet<T> {
+    private val parent = mutableMapOf<T, T>()
+    
+    // find the root node of given element
+    private fun find(element: T): T{
+        var root = element
+        // follow the path from leaf to root
+        while (parent.contains(root) && root != parent[root]) {
+            root = parent[root]!!
+        }
+        
+        return root
+    }
+    
+    fun union(e1: T, e2: T) {
+        // find the root
+        val r1 = find(e1)
+        val r2 = find(e2)
+        
+        // if e1 and e2 belong to different sets
+        // link them together
+        if (r1 != r2) {
+            parent[r1] = r2
+        }
+    }
+    
+    fun isSameSet(e1: T, e2: T): Boolean = find(e1) == find(e2)
+}
+```
+
+You may notice that we link two sets via the root node in the union procedure. It's accepted that they link them on a leaf node. This involves the trade-off between the union and the find procedure, which function should carry on more time complexity.
+
+## Implementation
+
+
 
 
 
