@@ -249,9 +249,29 @@ You may notice that we link two sets via the root node in the union procedure. I
 
 ## Implementation
 
+Based on the disjoint set above, it's easy to implement Kruskal's algorithm for searching the minimum spanning tree. We have discussed the mechanism behind this algorithm at the beginning of this section. You can watch [this video](https://www.youtube.com/watch?v=71UQH7Pr9kU&ab_channel=MichaelSambol) to learn more details about this algorithm. Here is the code:
 
-
-
+```kotlin
+fun <T> kruskalMST(graph: GraphWeighted<T>): MutableList<Edge<T>> {
+    // the minimum spanning tree
+    val mst = mutableListOf<Edge<T>>()
+    // candidate edges
+    val edges = graph.adjList().flatMap { it.value }.sortedBy { it.weight }
+    val ds = DisjointSet<T>()
+    
+    for (edge in edges) {
+        // only use the cut edges
+        // in other words, vertices on edge belong to different area
+        if (!ds.isSameSet(edge.start, edge.end)) {
+            mst.add(edge)
+            // record the new relationship
+            ds.union(edge.start, edge.end)
+        }
+    }
+    
+    return mst
+}
+```
 
 # Reference
 
@@ -259,19 +279,8 @@ You may notice that we link two sets via the root node in the union procedure. I
 
 - [Pair - Kotlin Programming Language](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-pair/)
 
+- [Prim's algorithm in 2 minutes](https://www.youtube.com/watch?v=cplfcGZmX7I&ab_channel=MichaelSambol)
 
+- [Kruskal's algorithm in 2 minutes](https://www.youtube.com/watch?v=71UQH7Pr9kU&ab_channel=MichaelSambol)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+- [Flows and Cuts in Graph Theory](https://www.youtube.com/watch?v=u6FkNw16VJA&t=7s&ab_channel=patrickJMT)
