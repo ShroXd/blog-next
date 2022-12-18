@@ -22,7 +22,7 @@ The red vertices and edges show one of the minimum spanning trees of the origina
 
 This article will introduce a way to implement the weighted graph first. We implemented it when we introduced the fundamental knowledge, but to work with two algorithms we will mention later, we need to add some methods for the weighted graph class. Secondly, we will introduce two famous algorithms for finding the minimum spanning tree: Prim's algorithm and Kruskal's algorithm. The code of these two algorithms is based on the priority queue and the disjoint set. We will skip the first and introduce the second data structure's details. The reason why we use additional data structure is to reduce the complexity of the code. 
 
-# Weighted Graph
+# Weighted graph
 
 Recalling the fundamental knowledge about the graph in [Algorithm Connect! Re: Dive - Graph](https://www.atriiy.com/blogs/graph), we showed how to implement the weighted graph. This time we will use Kotlin's excellent syntax to finish this work.
 
@@ -108,7 +108,97 @@ class GraphWeighted<T> (private val isDirected: Boolean) {
 }
 ```
 
+Furthermore, some functions will be added to `GraphWeighted` class to make it work with other code efficiently. The following code is an example.
 
+```kotlin
+class GraphWeighted<T> (private val isDirected: Boolean) {
+    // ...
+    
+    // check if vertex v exists in the graph
+    fun hasVertex(v: T): Boolean = adj.containsKey(v)
+    
+    // check if there is a edge exists between vertex a & b
+    fun hasEdge(a: T, b: T): Boolean {
+        return if (isDirected) {
+            adj[a]?.find { it.end == b } != null
+        } else {
+            adj[a]?.find { it.end == b } != null &&
+            adj[b]?.find { it.end == a } != null
+        }
+    }
+    
+    // some helper functions to expose internal fields
+    fun vertices(): MutableList<T> = adj.keys.toMutableList()
+    fun edges(v: T): MutableList<Edge<T>>? = adj[v]
+    fun adjList(): MutableMap<T, MutableList<Edge<T>>> = adj
+}
+```
+
+Again, although we used Kotlin to implement the `GraphWeighted` class, you can still choose other languages or ways to do it. The crux of this is to store `weight` in _edges_. Weight can be an abstract concept, not a concrete weight or distance.
+
+Based on the understanding of the weighted graph, we can introduce two algorithms for finding minimum spanning trees.
+
+# Prim's algorithm
+
+Before talking about the prim's algorithm, we want to emphasize the definition of the minimum spanning tree. The minimum spanning tree is a subset of the original graph's edges which satisfies the following:
+
+1. Includes all vertices
+2. All vertices are connected
+3. Without cycle
+4. Has the minimum sun of weight
+
+Prim's algorithm takes vertices as objects of observation. The idea is that if the result is a minimum spanning tree, each step in generating it chooses a minimum edge. Therefore, we can choose one vertex every time. Suppose the set of chosen vertices is _set a_, and the remaining vertices are _set b_. We call the edges between set A and set B __cuts__. The algorithm chooses one edge *from cuts* at each step until all vertices have been selected.
+
+If you prefer watching videos to understand the mechanism of Prim's algorithm, [this video](https://www.youtube.com/watch?v=cplfcGZmX7I&ab_channel=MichaelSambol) will be the best choice.
+
+In this algorithm, we use two external data structures. Although we can implement all the logic completely ourselves, we don't think it's a good practice. First, implementing all details makes the skeleton of the algorithm becomes ambiguous. Second, it equals breaking the external data structure and writing it into the algorithm. Because of this, we use a mutable set to record visited vertices and a priority queue to store candidate edges. Notice that we check if the `start` and `end` vertex on edge is visited before adding it to the result. Thus there is no need to rebuild priority after adding a new vertex. The following is the code.
+
+```kotlin
+fun <T> primMST(graph: GraphWeighted<T>): MutableList<Edge<T>> {
+    // the minimum spanning tree
+    val mst = mutableListOf<Edge<T>>()
+    // record the visited vertices to prevent infinity cycle
+    val visited = mutableSetOf<T>()
+    // store ordered candidate edges
+    val queue = PriorityQueue<Edge<T>> { e1, e2 -> e1.weight - e2.weight }
+    
+    // initialize the data
+    val firstVertex = graph.vertices()[0]
+    visited.add(firstVertex)
+    graph.edges(firstVertex)?.let { queue.addAll(it) }
+    
+    while (queue.isNotEmpty()) {
+        // chose the minimum edge from queue
+        val edge = queue.poll()
+        
+        // if two vertices are visited, skip current process and move on to the next edge
+        // if one vertex is visited, current process connects two adjacent area
+        // if no vertex is visted, current process creates a new area
+        if (visited.contains(edge.start) && visited.contains(edge.end)) continue
+        
+        // add a edge to result
+        mst.add(edge)
+        
+        // add candidate edges
+        if (!visited.contains(edge.start)) {
+            visited.add(edge.start)
+            graph.edges(edge.start)?.let { queue.addAll(it) }
+        }
+        if (!visited.contains(edge.end)) {
+            visited.add(edge.end)
+            graph.edges(edge.end)?.let { queue.addAll(it) }
+        }
+    }
+}
+```
+
+# Kruskal's algorithm
+
+// TODO: overview
+
+// disjoint set
+
+// code
 
 
 
