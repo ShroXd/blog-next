@@ -24,21 +24,45 @@ We often refer to this term when discussing system architecture, but people ofte
 
 ## Faults and failures
 
-// TODO
+A precise understanding of these two terms is the first step in understanding system reliability.
 
-## Dependencies and fault transaction
+A __fault__ is usually defined as one component of the system deviating from its specification, whereas a __failure__ is when the system as a whole stops providing the required service to the user. A system may continue to provide its service even when encountering a fault. Such a system is called __fault tolerant__.
 
-// TODO
+It's impossible to reduce the probability of a fault to zero. Therefore it is usually best to design fault-tolerance mechanisms that prevent faults from causing failures.
+
+## Dependencies and failure regions
+
+If a component's behavior's correctness requires the second component's correct behavior, we say the first component depends on the second component. An actual system may have a set of possible dependencies forming a graph. The graph is _acyclic_ if it forms part of a tree, while it is _cyclic_ if part of the dependencies connects to themselves. It is better to describe the second situation as a directed cyclic graph.
+
+When we design a fault-tolerant system, it is essential to identify the dependencies between components of the system. Dependencies may be static, or they may change. 
+
+A fault that occurs on a component may transmit in the dependencies graph. Thus it is essential to understand the failure regions. We define the failure region as a limitation of considering faults and failures to a portion of a system and its environment.
 
 ## Fault tolerance mechanisms
 
-__Redundancy management__
+Based on the discussion above, we introduce three fault tolerance mechanisms.
 
-__Acceptance test techniques__
+The first is __redundancy management__. It provides redundant resources for the system and automatically replaces a component when it fails so that it can continue providing service for the users. The second is __acceptance test techniques__. The components of the system execute the testing for the information from other components before using it. This mechanism can work in the non-redundant system. The third is __comparison techniques__. Multiple processors are used to execute the same program and compare the results across processors.
 
-__Comparison Techniques__
+## Achieve reliability
 
-// TODO
+Based on the discussion of reliability and fault-tolerant system, it's easy to understand the first step in implementing a reliable system is to understand your system precisely. You need to know the system's requirements so that you will have enough information to identify the portions that may go wrong. Determine the appropriate fault containment regions to deal with fault and make the time/space trade-offs.
+
+# Scalability
+
+
+
+## Describing load
+
+
+
+## Describing performance
+
+
+
+## Approaches for coping with load
+
+
 
 
 
