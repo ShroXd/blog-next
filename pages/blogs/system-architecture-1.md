@@ -114,3 +114,10 @@ The __agile__ working patterns provide a good framework to deal with this proble
 # Summary
 
 This article talked about some fundamental principles of measuring data-intensive applications. A good understanding of these principles is the first step to jumping into deep technical details. Although we will introduce more technologies to make the applications reliable, scalable, and maintainable, we will never have a one-size-fits-all solution. Succinctly understanding your system is always the first step to addressing the problems and making the application better.
+
+# Reference
+
+- [Designing Data-Intensive Applications](https://www.oreilly.com/library/view/designing-data-intensive-applications/9781491903063/)
+- [A Conceptual Framework for System Fault Tolerance](https://resources.sei.cmu.edu/library/asset-view.cfm?assetid=11747)
+- [Why Percentiles Don’t Work the Way You Think](https://orangematter.solarwinds.com/2016/11/18/why-percentiles-dont-work-the-way-you-think/)
+- [Everything You Know About Latency Is Wrong](https://bravenewgeek.com/everything-you-know-about-latency-is-wrong/)
