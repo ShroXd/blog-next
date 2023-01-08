@@ -3,8 +3,8 @@ title: "System's Bizarre Adventure - Reliable, Scalable, and Maintainable Applic
 date: '2023-1-3'
 lastmod: '2023-1-3'
 tags: ['system architecture']
-draft: true
-summary: ''
+draft: false
+summary: 'We hear these words a lot, what exactly do they mean?'
 authors: ['default']
 ---
 
@@ -107,13 +107,10 @@ Two effective methods are abstraction and delamination. It can hide the complexi
 
 ## Evolvability
 
+As we mentioned before, the system is not static stuff. We don't only refactor the code and architecture to support more users but also add new features and change the existing functions. Therefore, evolvability is an important measuring aspect of the system.
 
+The __agile__ working patterns provide a good framework to deal with this problem. Some technical tools and patterns from the agile community are useful for the system. Test-driving development and refactoring are probably the most well-known methodologies. 
 
+# Summary
 
-
-
-
-
-
-
-
+This article talked about some fundamental principles of measuring data-intensive applications. A good understanding of these principles is the first step to jumping into deep technical details. Although we will introduce more technologies to make the applications reliable, scalable, and maintainable, we will never have a one-size-fits-all solution. Succinctly understanding your system is always the first step to addressing the problems and making the application better.
