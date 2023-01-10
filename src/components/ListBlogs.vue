@@ -11,7 +11,7 @@ const routes = router
 
 <template>
   <ul>
-    <div class="text-5xl font-bold mb-4">
+    <div class="text-3xl font-400 mb-4">
       Blogs
     </div>
     <div class="text-base opacity-60">
@@ -27,7 +27,7 @@ const routes = router
         class="text-lg"
         :to="route.path"
       >
-        <span class="text-2xl inline-block mr-3 mb-3 cursor-pointer">
+        <span class="text-xl inline-block mr-3 mb-3 cursor-pointer font-300">
           {{ route.meta.frontmatter.title }}
           <span v-if="route.meta.frontmatter.draft">
             🚧
