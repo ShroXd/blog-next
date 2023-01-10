@@ -155,6 +155,14 @@ h6:focus .header-anchor {
   content: none;
 }
 
+.prose table {
+  border-collapse: collapse;
+}
+
+.prose table * {
+  color: var(--fg);
+}
+
 @media (max-width: 1200px) {
   .table-of-contents {
     display: none;
@@ -166,7 +174,7 @@ h6:focus .header-anchor {
   top: 80px;
   padding-top: 70px;
   font-size: 0.8em;
-  right: 60px;
+  right: 40px;
   width: 200px;
   bottom: 0;
   overflow-y: auto;
