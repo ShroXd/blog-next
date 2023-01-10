@@ -35,7 +35,7 @@ export default defineConfig({
             h3: { color: 'inherit' },
             h4: { color: 'inherit' },
             code: { color: 'inherit' },
-            img: { width: '100%', borderRadius: '16px' },
+            img: { display: 'block', width: '80%', margin: 'auto', borderRadius: '16px' },
           },
         },
       },
