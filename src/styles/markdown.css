@@ -59,17 +59,43 @@ html.dark {
 }
 
 .prose {
-  --fg: #555;
+  --fg: #6B6B6B;
   --fg-deep: #222;
   --fg-deeper: #000;
 
   color: var(--fg);
-  font-size: 1.1rem;
+  font-size: 1rem;
+  font-weight: 300;
 }
 
 .prose a {
+  color: inherit;
+  opacity: 0.75;
+  font-weight: 500;
+  text-decoration: underline;
   font-weight: inherit;
-  transition: color 0.3s ease-in-out;
+  transition: all .4s ease-out;
+
+  &:hover {
+    opacity: 1;
+    color: #000;
+  }
+}
+
+html.dark a,
+html.dark .prose button {
+  &:hover {
+    color: #fff;
+  }
+}
+
+.prose button {
+  &:hover {
+    color: #000;
+  }
+}
+
+.prose a:hover {
 }
 
 .prose a code {
@@ -129,6 +155,38 @@ h6:focus .header-anchor {
   opacity: 0.5;
 }
 
+.prose-sm h1 {
+  font-size: 25px;
+  font-weight: 600;
+
+  &:before {
+    content: ''
+  }
+}
+
+.prose-sm h2 {
+  font-size: 20px;
+  font-weight: 600;
+
+  &:before {
+    content: ''
+  }
+}
+
+.prose-sm h3 {
+  font-size: 16px;
+  font-weight: 600;
+
+  &:before {
+    content: '';
+    opacity: 0.4;
+  }
+}
+
+.prose ol {
+  padding-left: 0;
+}
+
 .prose blockquote {
   color: var(--fg);
   font-weight: normal;
@@ -155,6 +213,14 @@ h6:focus .header-anchor {
   content: none;
 }
 
+.prose table {
+  border-collapse: collapse;
+}
+
+.prose table * {
+  color: var(--fg);
+}
+
 @media (max-width: 1200px) {
   .table-of-contents {
     display: none;
@@ -166,7 +232,7 @@ h6:focus .header-anchor {
   top: 80px;
   padding-top: 70px;
   font-size: 0.8em;
-  right: 60px;
+  right: 40px;
   width: 200px;
   bottom: 0;
   overflow-y: auto;
@@ -177,7 +243,7 @@ h6:focus .header-anchor {
 }
 
 .table-of-contents:hover {
-  opacity: 0.5;
+  opacity: 0.85;
 }
 
 .table-of-contents ul > li::before {

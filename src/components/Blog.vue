@@ -12,9 +12,9 @@ const route = useRoute()
 </script>
 
 <template>
-  <div class="prose m-auto">
-    <div v-if="isBlogPage(route)" class="mb-12">
-      <div class="text-5xl font-black mb-2">
+  <div>
+    <div v-if="isBlogPage(route)" class="mb-20">
+      <div class="text-3xl font-500 mb-2">
         {{ frontmatter.title }}
       </div>
       <div class="text-base opacity-70">
