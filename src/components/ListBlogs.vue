@@ -27,14 +27,14 @@ const routes = router
         class="text-lg"
         :to="route.path"
       >
-        <span class="text-xl inline-block mr-3 mb-3 cursor-pointer font-300">
+        <span class="text-xl inline-block mr-3 mb-3 cursor-pointer font-400">
           {{ route.meta.frontmatter.title }}
           <span v-if="route.meta.frontmatter.draft">
             🚧
           </span>
         </span>
       </router-link>
-      <div class="opacity-60 text-sm mb-1">
+      <div class="opacity-60 text-sm mb-1 font-300">
         {{ route.meta.frontmatter.summary }}
       </div>
       <div class="opacity-30 text-sm">
