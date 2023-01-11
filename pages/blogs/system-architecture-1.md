@@ -1,7 +1,7 @@
 ---
 title: "System's Bizarre Adventure - Reliable, Scalable, and Maintainable Applications"
-date: '2023-1-3'
-lastmod: '2023-1-3'
+date: '2023-01-03'
+lastmod: '2023-01-03'
 tags: ['system architecture']
 draft: false
 summary: 'We hear these words a lot, what exactly do they mean?'
