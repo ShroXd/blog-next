@@ -95,9 +95,6 @@ html.dark .prose button {
   }
 }
 
-.prose a:hover {
-}
-
 .prose a code {
   color: inherit;
 }
@@ -111,6 +108,22 @@ html.dark .prose {
   --fg: #bbb;
   --fg-deep: #ddd;
   --fg-deeper: #fff;
+}
+
+@media (max-width: 1200px) {
+  .prose a {
+    color: #000;
+    opacity: 0.70;
+    font-weight: 500;
+    text-decoration: underline;
+    font-weight: inherit;
+    transition: all .4s ease-out;
+  }
+
+  html.dark a,
+  html.dark .prose button {
+    color: #fff;
+  }
 }
 
 a.item {
@@ -238,7 +251,6 @@ h6:focus .header-anchor {
   overflow-y: auto;
   overflow-x: hidden;
   text-overflow: ellipsis;
-  opacity: 0;
   transition: all .4s ease-out;
 }
 
